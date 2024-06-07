@@ -72,7 +72,7 @@ func hello(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	translationstr := string(translation)
-	translationstr = strings.ReplaceAll(translationstr, "]", "]\n")
+	translationstr = strings.ReplaceAll(translationstr, "]", "]\n\n")
 	QuranTranslationData := replaceAtIndex(translationstr, ' ', 0)
 	// Print the contents
 	fmt.Println(QuranTranslationData)

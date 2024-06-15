@@ -33,13 +33,52 @@ func sendResponse(w http.ResponseWriter, statusCode int, payload interface{}, ht
 
 	}
 }
-func replaceAtIndex(input string, replacement rune, index int) string {
-	out := []rune(input)
-	out[index] = replacement
-	return string(out)
+
+// scrapQuran function to fetch and parse the Quran verses
+func scrapQuran(surahNumber int) (string, error) {
+	url := fmt.Sprintf("https://api.globalquran.com/surah/%d/quran-uthmani-hafs", surahNumber)
+
+	// Make the HTTP GET request
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", fmt.Errorf("error making HTTP request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read the response body
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("error reading response body: %w", err)
+	}
+
+	// Parse the JSON response
+	var quranResponse QuranResponse
+	err = json.Unmarshal(body, &quranResponse)
+	if err != nil {
+		return "", fmt.Errorf("error parsing JSON: %w", err)
+	}
+
+	// Combine the verses into a single string
+	combinedVerses := ""
+	for _, verse := range quranResponse.Quran.UthmaniHafs {
+		combinedVerses += verse.Verse + " "
+	}
+
+	return combinedVerses, nil
 }
 
-func hello(w http.ResponseWriter, req *http.Request) {
+func getQuran(w http.ResponseWriter, req *http.Request) {
+	// vars := mux.Vars(req)
+	// SurahID := vars["id"]
+	// url := "https://api.globalquran.com/surah/1/quran-uthmani-hafs"
+	// scrapdata, err := ScrapeQuranData(url)
+	// if err != nil {
+	// 	return
+	// }
+	surahNumber := 1
+	combinedVerses, err := scrapQuran(surahNumber)
+	fmt.Println(combinedVerses)
+
 	// Read the contents of the text file
 	surahname, errs := ioutil.ReadFile("surahname.txt")
 	if errs != nil {
@@ -49,58 +88,53 @@ func hello(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	audio, errs := ioutil.ReadFile("audio.txt")
+	if errs != nil {
+		// Log the error but don't terminate the server
+		// log.Printf("Failed to read file: %v", err)
+		// fmt.Fprintf(w, "Error reading file")
+		return
+	}
+	straudio := strings.ReplaceAll(string(audio), `"`, ``)
+
 	// Read the contents of the text file
-	data, err := ioutil.ReadFile("output.txt")
+	finale, err := ioutil.ReadFile("finale.txt")
 	if err != nil {
 		// Log the error but don't terminate the server
 		// log.Printf("Failed to read file: %v", err)
 		// fmt.Fprintf(w, "Error reading file")
 		return
 	}
-	QuranDataStr := string(data)
-	QuranDataStr = strings.ReplaceAll(QuranDataStr, "]", "]\n")
-	QuranData := replaceAtIndex(QuranDataStr, ' ', 0)
-	// Print the contents
-	fmt.Println(QuranData)
-
-	// Read the contents of the text file
-	translation, erred := ioutil.ReadFile("translation.txt")
-	if erred != nil {
-		// Log the error but don't terminate the server
-		// log.Printf("Failed to read file: %v", err)
-		// fmt.Fprintf(w, "Error reading file")
-		return
-	}
-	translationstr := string(translation)
-	translationstr = strings.ReplaceAll(translationstr, "]", "]\n\n")
-	QuranTranslationData := replaceAtIndex(translationstr, ' ', 0)
-	// Print the contents
-	fmt.Println(QuranTranslationData)
+	finalestr := string(finale)
+	// finalestr = strings.ReplaceAll(finalestr, "]", "]")
+	// QuranfinaleData := replaceAtIndex(finalestr, ' ', 0)
+	QuranfinaleData := finalestr
+	// var result map[string][]string
+	// err = json.Unmarshal([]byte(finale), &result)
+	// if err != nil {
+	// 	fmt.Println("Error:", err)
+	// 	return
+	// }
 
 	// Prepare the payload as a map
-	payload := map[string]string{
-		"SurahName":   string(surahname),
-		"QuranVerse":  QuranData,
-		"Translation": QuranTranslationData,
+	// fmt.Println(scrapdata)
+	Data := map[string]string{
+		"SurahName":  string(surahname),
+		"FinaleData": QuranfinaleData,
+		"audio":      string(straudio),
+		"scrapdata":  combinedVerses,
 	}
 
 	// Send the response with the template
-	sendResponse(w, http.StatusOK, payload, "templates/index.html", "text/html; charset=UTF-8")
+	sendResponse(w, http.StatusOK, Data, "templates/GetSurah.html", "text/html; charset=UTF-8")
 	// sendResponse(w, http.StatusOK, QuranDataStr, "templates/index.html", "text/html; charset=UTF-8")
 
 }
 
 func main() {
-	// Ensure the file exists and create it if it doesn't
-	// data := []byte("Hello from Python!\n")
-	// err := ioutil.WriteFile("output.txt", data, 0644)
-	// if err != nil {
-	// 	log.Fatalf("Failed to create file: %v", err)
-	// }
-
-	http.HandleFunc("/", hello)
-	log.Println("Server starting on :8091")
-	err := http.ListenAndServe(":1485", nil)
+	http.HandleFunc("/", getQuran)
+	log.Println("Server starting on :9090")
+	err := http.ListenAndServe(":9090", nil)
 	if err != nil {
 		log.Fatalf("Server failed: %v", err)
 	}

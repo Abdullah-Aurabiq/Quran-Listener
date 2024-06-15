@@ -1,5 +1,5 @@
 import requests, sys, ast
-class PyGQ:
+class QG:
     SURAH_LAST = 114
     SURAH_FIRST = 1
     def __init__(self, url="http://api.globalquran.com/surah/", token="",
@@ -35,8 +35,11 @@ class PyGQ:
         response = requests.request("GET", url, headers=headers, data=payload)
         dictres = ast.literal_eval(response.text)
         result = dictres["audio_file"]["audio_url"]
-        s = requests.get(result)
-        open('audio.mp3', 'wb').write(s.content)
+        with open("audio.txt", "w", encoding="utf-8") as file:
+            import json
+            json.dump(result, file, ensure_ascii=False)
+        # s = requests.get(result)
+        # open('audio.mp3', 'wb').write(s.content)
 
 
     def getAyah(self, surah, ayah, lang):
@@ -92,34 +95,52 @@ if __name__ == "__main__":
     # quran-wordbyword
     # en.qaribullah
     lang = "quran-uthmani-hafs"
-    Q = PyGQ()
-    # Q.getAudio(surah=insurah)
-    surah = Q.getAyah(insurah, insurah, lang)
-    s = int(list(surah.keys())[0])
+    lang_Translation = "en.qaribullah"
+    Quran = QG()
+    Quran.getAudio(surah=insurah)
     surahname = quran_suras.get_sura_name(sura_number=insurah)
+    Qsurah = Quran.getAyah(insurah, insurah, lang)
+    Tsurah = Quran.getAyah(insurah, insurah, lang_Translation)
+
+    
+    Qoutput = ''
+    Toutput = ''
+    
+    s = int(list(Tsurah.keys())[0])
+    for i in range(len(Qsurah)):
+        Qayahnum = Qsurah[f'{s}']["ayah"]
+        Qoutput += Qsurah[f'{s}']['verse'] + f"[{Qayahnum}]A8ea8"
+        s+=1
+        
+    s = int(list(Qsurah.keys())[0])
+    for i in range(len(Tsurah)):
+        ayahnum = Tsurah[f'{s}']["ayah"]
+        Toutput += Tsurah[f'{s}']['verse'] + f"[{ayahnum}]A8ea8"
+        s+=1
+    def Reverse(lst):
+        new_lst = lst[::-1]
+        return new_lst
+    Qlist = Qoutput.split("A8ea8")
+    Qlist.pop()
+
+    Tlist = Toutput.split("A8ea8")
+    Tlist.pop()
+    a = {"ar": Qlist, "en": Tlist}
+
+    
+    with open("finale.txt", "w", encoding='utf-8') as file:
+        import json
+        json.dump(a, file, ensure_ascii=False)
+        
     with open("surahname.txt", "w", encoding="utf-8") as file:
         import json
         json.dump(surahname, file, ensure_ascii=False)
-    output = ''
-    for i in range(len(surah)):
-        ayahnum = surah[f'{s}']["ayah"]
-        output += surah[f'{s}']['verse'] + f"[{ayahnum}]"
-        s+=1
-    with open("output.txt", "w", encoding="utf-8") as file:
-        import json
-        json.dump(output, file, ensure_ascii=False)
-    # ################################################################################### #
-    lang = "en.qaribullah"
-    surah = Q.getAyah(insurah, insurah, lang)
-    output = ''
-    s = int(list(surah.keys())[0])
-    for i in range(len(surah)):
-        ayahnum = surah[f'{s}']["ayah"]
-        output += surah[f'{s}']['verse'] + f"[{ayahnum}]"
-        s+=1
-    with open("translation.txt", "w", encoding="utf-8") as file:
-        import json
-        json.dump(output, file, ensure_ascii=False)
-    
 
-    print(output)
+
+    # with open("output.txt", "w", encoding="utf-8") as file:
+    #     import json
+    #     json.dump(Qoutput, file, ensure_ascii=False)
+        
+    # with open("translation.txt", "w", encoding="utf-8") as file:
+    #     import json
+    #     json.dump(Toutput, file, ensure_ascii=False)

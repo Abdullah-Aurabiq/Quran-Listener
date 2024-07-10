@@ -14,4 +14,5 @@ type Verse struct {
 	Surah int    `json:"surah"`
 	Ayah  int    `json:"ayah"`
 	Verse string `json:"verse"`
+	
 }

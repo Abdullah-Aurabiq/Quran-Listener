@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search AI</title>
+    <style>
+        body {
+            background-image: url("https://images.unsplash.com/photo-1433863448220-78aaa064ff47");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+
+        .card {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(17, 25, 40, 0.25);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.125);
+            color: white;
+            font: bolder;
+            font-size: x-large;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-style: normal;
+            font-size: 36px;
+            margin: 5%;
+            border-radius: 50px;
+            padding: 5%;
+            text-align: center;
+            text-indent: 1%;
+            display: flow;
+        }
+
+        .input__container--variant {
+            padding: 1em 1em;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            width: 50vw;
+            /* min-width: 50vw; */
+            /* max-width: 100vw; */
+            height: 3vw;
+            /* min-height: 30vh; */
+            /* max-height: 30vh; */
+            padding: 1em;
+
+        }
+
+        .shadow__input--variant {
+            filter: blur(25px);
+            border-radius: 30px;
+            background-color: #F3FFF9;
+            opacity: 0.5;
+        }
+
+        .input__button__shadow--variant {
+            border-radius: 15px;
+            background-color: #07372C;
+            padding: 10px;
+            border: none;
+        }
+
+        .input__button__shadow--variant:hover {
+            background-color: #3C6659;
+        }
+
+        .input__search--variant {
+            width: 13em;
+            align-items: center;
+            border-radius: 13em;
+            outline: none;
+            border: none;
+            padding: 0.8em;
+            font-size: 1.2em;
+            color: #002019;
+            background-color: transparent;
+        }
+
+        .input__search--variant::placeholder {
+            color: #002019;
+            opacity: 0.7;
+        }
+
+        h1 {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(17, 25, 40, 0.25);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.125);
+            color: white;
+            font: bolder;
+            font-size: x-large;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-style: normal;
+            font-size: 36px;
+            margin: 5%;
+            border-radius: 50px;
+            padding: 5%;
+            text-align: center;
+            text-indent: 1%;
+            display: flow;
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>This QURAN AI Can Make Mistakes!💔
+        <div>
+            <form action="/search/" method="GET">
+                <!-- <label for="songName">Enter Song Name:</label> -->
+                <!-- <input type="text" id="songName" name="q" required>
+                <button type="submit" id="search">Search</button> -->
+                <div class="input__container input__container--variant">
+
+                    <div class="shadow__input shadow__input--variant"></div>
+
+                    <input type="text" id="search" name="q" class=" input__search input__search--variant"
+                        placeholder="Search..." style="margin-left: 25vw;">
+
+                    <button class="input__button__shadow input__button__shadow--variant" type="submit">
+
+                        <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" height="1.5em"
+                            width="13em">
+                            <path
+                                d="M4 9a5 5 0 1110 0A5 5 0 014 9zm5-7a7 7 0 104.2 12.6.999.999 0 00.093.107l3 3a1 1 0 001.414-1.414l-3-3a.999.999 0 00-.107-.093A7 7 0 009 2z"
+                                fill-rule="evenodd" fill="#FFF"></path>
+                        </svg>
+
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </h1>
+    <div id="container" class="card">
+        {{.SearchData}}
+
+    </div>
+
+
+    <script>
+        // Wait for the page to load before executing the JavaScript code
+        window.onload = function () {
+            let text = "";
+            // Replace the innerHTML of the container div with the search data
+            let container = document.getElementById("container");
+            let innerhtml = "{{.SearchData}}"
+            // innerhtml.replace("")
+            // Replace <em>fear</em> with <strong>fear</strong>
+            innerhtml = innerhtml.replace(/<em>(.*?)<\/em>/g, "<strong style='background-color:yellow; color:black;'>$1</strong>");
+            // Convert the innerhtml to dictionary format
+            let data = JSON.parse(innerhtml);
+
+            let dataresults = data["search"]["results"]
+            // Iterate through dataresults and console.log them
+            for (let i = 0; i < dataresults.length; i++) {
+                let translations = dataresults[i]["translations"]
+                // console.log(translations);
+                // Iterate through translations and console.log them
+                for (let j = 0; j < translations.length; j++) {
+                    console.log(translations[j]["text"]);
+                    text += translations[j]["text"] + "<hr style='color:white; width:50vw; border-width:12px; border-style: solid; border-radius:50px;' >";
+                }
+
+            }
+            container.innerHTML = text;
+            // Display the search data in the console
+            // console.log(data["search"]["results"]);
+
+            // Split the innerhtml when "translation" is present
+            // innerhtml = innerhtml.split("translation");
+            // Replace the innerHTML of the container div with the first part of the split data
+            // container.innerHTML = JSON.stringify(data["search"]["results"]);
+        };
+    </script>
+
+</body>
+
+</html>

@@ -7,8 +7,103 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sort"
+	"strconv"
 	"strings"
+
+	"github.com/gorilla/mux"
 )
+
+// App represents the application
+type App struct {
+	Router *mux.Router
+}
+
+// New creates a new instance of App
+func (app *App) Initialize() error {
+	app.Router = mux.NewRouter().StrictSlash(true)
+	app.handleRoutes()
+	return nil
+}
+
+// SetDB sets the database connection
+func (app *App) Run(address string) {
+	log.Fatal(http.ListenAndServe(address, app.Router))
+}
+
+const API = "https://www.mp3quran.net/api/"
+
+// StripTashkeel removes Arabic diacritics from the input text.
+func StripTashkeel(text string) string {
+	diacritics := []rune{
+		'\u064b', // FATHATAN
+		'\u064c', // DAMMATAN
+		'\u064d', // KASRATAN
+		'\u064e', // FATHA
+		'\u064f', // DAMMA
+		'\u0650', // KASRA
+		'\u0651', // SHADDA
+		'\u0652', // SUKUN
+	}
+
+	var result strings.Builder
+	for _, char := range text {
+		if !contains(diacritics, char) {
+			result.WriteRune(char)
+		}
+	}
+	return result.String()
+}
+
+// contains checks if a slice contains a specific rune.
+func contains(s []rune, r rune) bool {
+	for _, a := range s {
+		if a == r {
+			return true
+		}
+	}
+	return false
+}
+
+// SuraName represents the JSON structure returned by the API.
+type SuraName struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+// GetSuraName fetches and returns the name of the Sura for the given number.
+func GetSuraName(suraNumber int) (string, error) {
+	if suraNumber <= 0 || suraNumber > 114 {
+		return "", fmt.Errorf("invalid sura number: sura not found '%d'", suraNumber)
+	}
+
+	response, err := http.Get(API + "_arabic_sura.php")
+	if err != nil {
+		return "", err
+	}
+	defer response.Body.Close()
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", err
+	}
+
+	var suras struct {
+		SurasName []SuraName `json:"Suras_Name"`
+	}
+	err = json.Unmarshal(body, &suras)
+	if err != nil {
+		return "", err
+	}
+
+	for _, sura := range suras.SurasName {
+		if sura.ID == fmt.Sprintf("%d", suraNumber) {
+			return StripTashkeel(strings.TrimSpace(sura.Name)), nil
+		}
+	}
+
+	return "", fmt.Errorf("sura not found for number '%d'", suraNumber)
+}
 
 func sendResponse(w http.ResponseWriter, statusCode int, payload interface{}, htmlfilename string, contentype string) {
 	response, _ := json.Marshal(payload)
@@ -34,108 +129,125 @@ func sendResponse(w http.ResponseWriter, statusCode int, payload interface{}, ht
 	}
 }
 
-// // scrapQuran function to fetch and parse the Quran verses
-// func scrapQuran(surahNumber int) (string, error) {
-// 	url := fmt.Sprintf("https://api.globalquran.com/surah/%d/quran-uthmani-hafs", surahNumber)
-
-// 	// Make the HTTP GET request
-// 	resp, err := http.Get(url)
-// 	if err != nil {
-// 		return "", fmt.Errorf("error making HTTP request: %w", err)
-// 	}
-// 	defer resp.Body.Close()
-
-// 	// Read the response body
-// 	body, err := ioutil.ReadAll(resp.Body)
-// 	if err != nil {
-// 		return "", fmt.Errorf("error reading response body: %w", err)
-// 	}
-
-// 	// Parse the JSON response
-// 	var quranResponse QuranResponse
-// 	err = json.Unmarshal(body, &quranResponse)
-// 	if err != nil {
-// 		return "", fmt.Errorf("error parsing JSON: %w", err)
-// 	}
-
-// 	// Combine the verses into a single string
-// 	combinedVerses := ""
-// 	for _, verse := range quranResponse.Quran.UthmaniHafs {
-// 		combinedVerses += verse.Verse + " "
-// 	}
-
-// 	return combinedVerses, nil
-// }
 
 func getQuran(w http.ResponseWriter, req *http.Request) {
-	// vars := mux.Vars(req)
-	// SurahID := vars["id"]
-	// url := "https://api.globalquran.com/surah/1/quran-uthmani-hafs"
-	// scrapdata, err := ScrapeQuranData(url)
-	// if err != nil {
-	// 	return
-	// }
-	// surahNumber := 1
-	// combinedVerses, err := scrapQuran(surahNumber)
-	// fmt.Println(combinedVerses)
-
-	// Read the contents of the text file
-	surahname, errs := ioutil.ReadFile("surahname.txt")
-	if errs != nil {
-		// Log the error but don't terminate the server
-		// log.Printf("Failed to read file: %v", err)
-		// fmt.Fprintf(w, "Error reading file")
+	vars := mux.Vars(req)
+	SurahID, e := strconv.Atoi(vars["id"])
+	if e != nil {
+		sendResponse(w, http.StatusBadRequest, "Invalid surah number", "", "application/json")
 		return
 	}
 
-	audio, errs := ioutil.ReadFile("audio.txt")
-	if errs != nil {
-		// Log the error but don't terminate the server
-		// log.Printf("Failed to read file: %v", err)
-		// fmt.Fprintf(w, "Error reading file")
-		return
-	}
-	straudio := strings.ReplaceAll(string(audio), `"`, ``)
-
-	// Read the contents of the text file
-	finale, err := ioutil.ReadFile("finale.txt")
+	surahname, err := GetSuraName(SurahID)
 	if err != nil {
-		// Log the error but don't terminate the server
-		// log.Printf("Failed to read file: %v", err)
-		// fmt.Fprintf(w, "Error reading file")
-		return
+		fmt.Println("Error:", err)
+	} else {
+		fmt.Println("Sura Name:", surahname)
 	}
-	finalestr := string(finale)
-	// finalestr = strings.ReplaceAll(finalestr, "]", "]")
-	// QuranfinaleData := replaceAtIndex(finalestr, ' ', 0)
-	QuranfinaleData := finalestr
-	// var result map[string][]string
-	// err = json.Unmarshal([]byte(finale), &result)
-	// if err != nil {
-	// 	fmt.Println("Error:", err)
-	// 	return
-	// }
-	quran := NewQG("http://api.globalquran.com/surah/", "", map[string]string{"en": "quran-simple", "ar": "quran-simple"}, 10)
-	surah := 1       // example surah number
+
+	quranen := NewQG("http://api.globalquran.com/surah/", "", map[string]string{"ar": "en.qaribullah", "en": "en.qaribullah"}, 10)
+	surah := SurahID // example surah number
 	ayah := 1        // example ayah number
 	language := "en" // example language code
+	// "quran-uthmani-hafs"
 
-	ayahInfos, err := quran.getAyah(surah, ayah, language)
+	ayahInfosen, err := quranen.getAyah(surah, ayah, language)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(ayahInfos)
-	// for _, ayahInfo := range ayahInfos {
-	// 	fmt.Printf("ID: %v, \n", ayahInfo)
-	// }
-	// Prepare the payload as a map
-	// fmt.Println(scrapdata)
+	ayahInfoseng, _ := json.Marshal(ayahInfosen)
+
+	quranar := NewQG("http://api.globalquran.com/surah/", "", map[string]string{"ar": "quran-uthmani-hafs", "en": "quran-uthmani-hafs"}, 10)
+	language = "ar" // example language code
+	ayahInfosar, err := quranar.getAyah(surah, ayah, language)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	ayahInfosara, _ := json.Marshal(ayahInfosar)
+	// keys := reflect.ValueOf(ayahInfosen["quran"]["en.qaribullah"]).MapKeys()
+	English_try := string(ayahInfoseng)
+	English_try = strings.ReplaceAll(English_try, "map[quran:map[en.qaribullah:map[", "s")
+	English_try = strings.ReplaceAll(English_try, "]]]]", "")
+	// fmt.Println(English_try)
+	Arabic_try := string(ayahInfosara)
+	Arabic_try = strings.ReplaceAll(Arabic_try, "map[quran:map[en.qaribullah:map[", "s")
+	Arabic_try = strings.ReplaceAll(Arabic_try, "]]]]", "")
+	// fmt.Println(Arabic_try)
+
+	var Englishdata map[string]map[string]map[int]Verse
+	err = json.Unmarshal([]byte(English_try), &Englishdata)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	// Create a slice to store the verses
+	var English_verses []Verse
+	for _, innerMap := range Englishdata["quran"]["en.qaribullah"] {
+		English_verses = append(English_verses, innerMap)
+	}
+
+	// Sort the English_verses by Ayah number
+
+	sort.Slice(English_verses, func(i, j int) bool {
+		return English_verses[i].Ayah < English_verses[j].Ayah
+	})
+
+	// Display the sorted English_verses
+	var English_output string
+	for _, verse := range English_verses {
+		English_output += fmt.Sprintf("%s[%d]A8ea8", verse.Verse, verse.Ayah)
+		// fmt.Printf("English: Verse %d: %s\n", verse.Ayah, verse.Verse)
+	}
+
+	var arabic_data map[string]map[string]map[int]Verse
+	err = json.Unmarshal([]byte(Arabic_try), &arabic_data)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	// Create a slice to store the verses
+	var arabic_verses []Verse
+	for _, innerMap := range arabic_data["quran"]["quran-uthmani-hafs"] {
+		arabic_verses = append(arabic_verses, innerMap)
+	}
+
+	// Sort the arabic_verses by Ayah number
+	sort.Slice(arabic_verses, func(i, j int) bool {
+		return arabic_verses[i].Ayah < arabic_verses[j].Ayah
+	})
+
+	// Display the sorted arabic_verses
+	var arabic_output string
+	for _, verse := range arabic_verses {
+		arabic_output += fmt.Sprintf("%s[%d]A8ea8", verse.Verse, verse.Ayah)
+		// fmt.Printf("Arabic: Verse %d: %s\n", verse.Ayah, verse.Verse)
+	}
+	ar := strings.Split(arabic_output, "A8ea8")
+	en := strings.Split(English_output, "A8ea8")
+
+	// fmt.Println("English: ", en)
+	// fmt.Println("Arabic: ", ar)
+	a := make(map[string][]string)
+	a["ar"] = ar
+	a["en"] = en
+	// fmt.Println(a)
+	// str := fmt.Sprintf("%v", a)
+	as, _ := json.Marshal(a)
+	ar_en := string(as)
+	ar_en = strings.ReplaceAll(ar_en, "map[", "")
+	ar_en = strings.ReplaceAll(ar_en, "]]", "")
+	// fmt.Println(ar_en)
+	audioUrl, _ := getAudio(1)
 	Data := map[string]string{
 		"SurahName":  string(surahname),
-		"FinaleData": QuranfinaleData,
-		"audio":      string(straudio),
-		// "scrapdata":  result["verse"],
+		"FinaleData": ar_en,
+		"audio":      audioUrl,
+		// "englishQuran": English_output,
+		// "arabicQuran":  arabic_output,
 	}
 
 	// Send the response with the template
@@ -144,12 +256,49 @@ func getQuran(w http.ResponseWriter, req *http.Request) {
 
 }
 
+func getAudio(surah int) (string, error) {
+	url := fmt.Sprintf("https://api.quran.com/api/v4/chapter_recitations/10/%d", surah)
+	// url := fmt.Sprintf("https://api.quran.com/api/v4/chapter_recitations/2/%d", surah)
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return "", err
+	}
+
+	req.Header.Set("Accept", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	var dictres map[string]interface{}
+	err = json.Unmarshal(body, &dictres)
+	if err != nil {
+		return "", err
+	}
+
+	audioURL, ok := dictres["audio_file"].(map[string]interface{})["audio_url"].(string)
+	if !ok {
+		return "", fmt.Errorf("audio url not found in response")
+	}
+
+	return audioURL, nil
+}
+
 func Search(w http.ResponseWriter, r *http.Request) {
 	// Get the id from the url parameter
 
 	query := r.URL.Query().Get("q")
 
-	url := fmt.Sprintf("https://api.quran.com/api/v4/search?q=%v&size=20&page=1&language=en", query)
+	url := fmt.Sprintf("https://api.quran.com/api/v4/search?q=%v&size=200&page=1&language=en", query)
 	method := "GET"
 
 	client := &http.Client{}
@@ -194,14 +343,47 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func main() {
-
-	http.HandleFunc("/", getQuran)
-	http.HandleFunc("/home", Home)
-	http.HandleFunc("/search/", Search)
-	log.Println("Server starting on :9090")
-	err := http.ListenAndServe(":9090", nil)
+func Hadith(w http.ResponseWriter, r *http.Request) {
+	apiUrl := "https://hadithapi.com/api/sahih-bukhari/chapters?apiKey=$2y$10$u6K80SDvlCph1KgbQOOq0uaC68QRd1JwsESIYRZwOvc9ARow1TZq"
+	resp, err := http.Get(apiUrl)
 	if err != nil {
-		log.Fatalf("Server failed: %v", err)
+		fmt.Println(err)
+		return
 	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	var data map[string]interface{}
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	// jsonData, err := json.MarshalIndent(data, "", "  ")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
+
+	sendResponse(w, http.StatusOK, data, "templates/hadith.html", "text/html; charset=UTF-8")
+
+}
+func (app *App) handleRoutes() {
+	app.Router.HandleFunc("/quran/{id}", getQuran).Methods("GET")
+	app.Router.HandleFunc("/home/", Home)
+	app.Router.HandleFunc("/search/", Search)
+	app.Router.HandleFunc("/hadith/", Hadith)
+
+}
+
+func main() {
+	app := App{}
+	log.Println("Server starting on :1481")
+	app.Initialize()
+	app.Run("localhost:1481")
 }

@@ -129,7 +129,6 @@ func sendResponse(w http.ResponseWriter, statusCode int, payload interface{}, ht
 	}
 }
 
-
 func getQuran(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	SurahID, e := strconv.Atoi(vars["id"])
@@ -242,10 +241,20 @@ func getQuran(w http.ResponseWriter, req *http.Request) {
 	ar_en = strings.ReplaceAll(ar_en, "]]", "")
 	// fmt.Println(ar_en)
 	audioUrl, _ := getAudio(1)
+	var SurahIDs string
+	if SurahID < 10 {
+		SurahIDs = "00" + strconv.Itoa(SurahID)
+	} else if SurahID < 100 {
+		SurahIDs = "0" + strconv.Itoa(SurahID)
+	} else if SurahID >= 100 {
+		SurahIDs = strconv.Itoa(SurahID)
+	}
+	fmt.Println(SurahIDs)
 	Data := map[string]string{
 		"SurahName":  string(surahname),
 		"FinaleData": ar_en,
 		"audio":      audioUrl,
+		"id":         SurahIDs,
 		// "englishQuran": English_output,
 		// "arabicQuran":  arabic_output,
 	}
@@ -344,33 +353,35 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func Hadith(w http.ResponseWriter, r *http.Request) {
-	apiUrl := "https://hadithapi.com/api/sahih-bukhari/chapters?apiKey=$2y$10$u6K80SDvlCph1KgbQOOq0uaC68QRd1JwsESIYRZwOvc9ARow1TZq"
-	resp, err := http.Get(apiUrl)
+	url := "https://hadithapi.com/api/sahih-bukhari/chapters?apiKey=$2y$10$u6K80SDvlCph1KgbQOOq0uaC68QRd1JwsESIYRZwOvc9ARow1TZq"
+	method := "GET"
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, nil)
+
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
+	res, err := client.Do(req)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	defer res.Body.Close()
 
-	var data map[string]interface{}
-	err = json.Unmarshal(body, &data)
+	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	// jsonData, err := json.MarshalIndent(data, "", "  ")
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
+	strbordy := string(body)
 
-	sendResponse(w, http.StatusOK, data, "templates/hadith.html", "text/html; charset=UTF-8")
+	payload := map[string]string{
+		"body": strbordy,
+		// "scrapdata":  result["verse"],
+	}
+
+	sendResponse(w, http.StatusOK, payload, "templates/hadith.html", "text/html; charset=UTF-8")
 
 }
 func (app *App) handleRoutes() {

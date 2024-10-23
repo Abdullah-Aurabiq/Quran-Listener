@@ -1,1 +1,83 @@
-<h1>{{.}}</h1>
+<!-- <h1>{{.body}}</h1> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            text-align: center;
+            color: white;
+            background-color: rgb(104, 60, 93);
+            border-radius: 50px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <h1 id="dataset"></h1> -->
+    <div id="dirs"></div>
+    <script>
+        const apiUrl = 'https://hadithapi.com/api/books?apiKey=$2y$10$u6K80SDvlCph1KgbQOOq0uaC68QRd1JwsESIYRZwOvc9ARow1TZq';
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                dirs = document.getElementById("dirs");
+                htmliner = JSON.stringify(data["books"]);
+                // dirs.innerHTML += `<h1>${htmliner}</h1>`;
+                for (let i = 0; i < data["books"].length; i++) {
+                    console.log(i)
+                }
+                data["books"].forEach(element => {
+                    // console.log(element)
+                    Object.keys(element).forEach(key => {
+                        dirs = document.getElementById("dirs");
+                        button = document.createElement("button");
+                        if (key == "bookName") {
+                            console.log("Yes")
+                            document.createElement("button").innerHTML = key;
+                        };
+                        button.innerHTML = element["bookName"];
+                        dirs.innerHTML += `<h1>${key}</h1><h2>${element[key]}</h2>`;
+                        // console.log(key, element[key]);
+                    });
+                });
+
+
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        // const apiUrl = 'https://hadithapi.com/api/hadiths?apiKey=$2y$10$u6K80SDvlCph1KgbQOOq0uaC68QRd1JwsESIYRZwOvc9ARow1TZq';
+        // fetch(apiUrl)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         // console.log(data);
+        //         // document.createElement("h2").innerHTML = data
+        //         // let dataset = document.getElementById("dataset");
+
+        //         // dataset.innerHTML = JSON.stringify(data["hadiths"]["data"]);
+        //         for (let i = 0; i < data["hadiths"]["data"].length; i++) {
+        //             console.log(i)
+        //         }
+        //         data["hadiths"]["data"].forEach(element => {
+        //             // console.log(element)
+        //             Object.keys(element).forEach(key => {
+        //                 dirs = document.getElementById("dirs");
+        //                 dirs.innerHTML += `<h1>${key}</h1><h2>${element[key]}</h2>`;
+        //                 // console.log(key, element[key]);
+        //             })
+        //         });
+
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     })
+    </script>
+</body>
+
+</html>

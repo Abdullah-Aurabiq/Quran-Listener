@@ -152,6 +152,7 @@
             // Replace the innerHTML of the container div with the search data
             let container = document.getElementById("container");
             let innerhtml = "{{.SearchData}}"
+            console.log(innerhtml)
             // innerhtml.replace("")
             // Replace <em>fear</em> with <strong>fear</strong>
             innerhtml = innerhtml.replace(/<em>(.*?)<\/em>/g, "<strong style='background-color:yellow; color:black;'>$1</strong>");

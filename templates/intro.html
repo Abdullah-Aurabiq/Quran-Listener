@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Quran 📔</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/script.js"></script>
+</head>
+
+<body>
+    <!-- Add navbar.html using golang's http -->
+    {{ template "navbar.html" . }}
+
+    <div class="bgcolor"
+        style="width: 50vw; height: 50vh; background-color:#0088ff; border-radius: 50%; z-index: -123123123; position: fixed; top:20%; left: 20%;">
+    </div>
+    <div class="abstract">
+        <div class="main-container">
+            <h1>Learn Quran ��</h1>
+            <p>Welcome to the Quran Learning App! Here, you'll find the most comprehensive and accurate Quranic learning
+                material available. Select a surah and start learning its verses, reciting them, and exploring its
+                meanings.
+            </p>
+            <a href="/start/"
+                style="background-color: #0088ff8c; color: white; text-decoration: none; border-radius: 25%; width: 500px;">Start
+                Learning</a>
+        </div>
+        <div class="cube">
+            <img src="/static/image-Photoroom.png" alt="">
+        </div>
+    </div>
+</body>
+
+</html>

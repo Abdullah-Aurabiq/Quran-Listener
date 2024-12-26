@@ -21,7 +21,7 @@ type App struct {
 
 // New creates a new instance of App
 func (app *App) Initialize() error {
-	app.Router = mux.NewRouter().StrictSlash(true)
+	app.Router = mux.NewRouter().StrictSlash(false)
 	app.handleRoutes()
 	return nil
 }
@@ -109,7 +109,7 @@ func sendResponse(w http.ResponseWriter, statusCode int, payload interface{}, ht
 	response, _ := json.Marshal(payload)
 	if htmlfilename != "" {
 		response = nil
-		tmpl, err := template.ParseFiles(htmlfilename)
+		tmpl, err := template.ParseFiles(htmlfilename, "templates/navbar.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -240,7 +240,7 @@ func getQuran(w http.ResponseWriter, req *http.Request) {
 	ar_en = strings.ReplaceAll(ar_en, "map[", "")
 	ar_en = strings.ReplaceAll(ar_en, "]]", "")
 	// fmt.Println(ar_en)
-	audioUrl, _ := getAudio(1)
+	audioUrl, _ := getAudio(SurahID)
 	var SurahIDs string
 	if SurahID < 10 {
 		SurahIDs = "00" + strconv.Itoa(SurahID)
@@ -384,11 +384,34 @@ func Hadith(w http.ResponseWriter, r *http.Request) {
 	sendResponse(w, http.StatusOK, payload, "templates/hadith.html", "text/html; charset=UTF-8")
 
 }
+
+// Home Page router
+func Intro(w http.ResponseWriter, r *http.Request) {
+	sendResponse(w, http.StatusOK, nil, "templates/intro.html", "text/html; charset=UTF-8")
+}
+func contact_us(w http.ResponseWriter, r *http.Request) {
+	sendResponse(w, http.StatusOK, nil, "templates/contact-us.html", "text/html; charset=UTF-8")
+}
+func about_us(w http.ResponseWriter, r *http.Request) {
+	sendResponse(w, http.StatusOK, nil, "templates/about-us.html", "text/html; charset=UTF-8")
+}
+func start(w http.ResponseWriter, r *http.Request) {
+	sendResponse(w, http.StatusOK, nil, "templates/start.html", "text/html; charset=UTF-8")
+}
 func (app *App) handleRoutes() {
 	app.Router.HandleFunc("/quran/{id}", getQuran).Methods("GET")
-	app.Router.HandleFunc("/home/", Home)
+	app.Router.HandleFunc("/quran/", Home)
 	app.Router.HandleFunc("/search/", Search)
 	app.Router.HandleFunc("/hadith/", Hadith)
+	app.Router.HandleFunc("/home/", Intro)
+	app.Router.HandleFunc("/contact-us/", contact_us)
+	app.Router.HandleFunc("/about-us/", about_us)
+	app.Router.HandleFunc("/start/", start)
+	// app.Router.HandleFunc("/start/", Start)
+	
+	// Host the static folder for resources route
+	fs := http.FileServer(http.Dir("./static/"))
+	app.Router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
 
 }
 

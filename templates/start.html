@@ -147,40 +147,22 @@
     {{ template "navbar.html" . }}
 
     <div class="course-container">
+        {{range .courses}}
         <!-- Course 1 -->
         <div class="course" onmouseenter="hoverd()">
             <!-- <img src="https://images.unsplash.com/photo-1638564711984-66f0768ca89f" alt="Course Image"> -->
             <div class="course-details">
-                <h2 class="course-title">Quran Tajweed</h2>
-                <p class="course-body">Detail: You will learn tajweed and recitation techniques to perfect your reading
-                    of the Quran.</p>
+                <h2 class="course-title">{{ .Name }}</h2>
+                <p class="course-body">{{ .Detail }}</p>
                 <div class="price-container">
-                    <h3 class="course-price">$50</h3>
-                    <h3 class="listed-price">$100</h3>
+                    <h3 class="course-price">${{ .DiscountedPrice }} </h3>
+                    <h3 class="listed-price">${{ .Price }} </h3>
 
                 </div>
 
             </div>
             <button class="course-button">Start</button>
         </div>
-
-        <!-- Course 2 -->
-        <div class="course" onmouseenter="hoverd()">
-            <!-- <img src="https://images.unsplash.com/photo-1527585405938-779aada8410b" alt="Course Image"> -->
-            <div class="course-details">
-                <h2 class="course-title">Arabic Language</h2>
-                <p class="course-body">Detail: You will learn tajweed and recitation techniques to perfect your reading
-                    of the Quran.</p>
-
-                <div class="price-container">
-                    <h3 class="course-price">$75</h3>
-                    <h3 class="listed-price">$150</h3>
-
-                </div>
-
-            </div>
-            <button class="course-button">Start</button>
-        </div>
-
+        {{end}}
     </div>
 </body>

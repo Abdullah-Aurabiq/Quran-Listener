@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            width: 50vw;
+            /* padding: 20px; */
+            /* align-items: center; */
+            /* justify-content: center; */
+            background: #fdfdfd;
+            /* Light background for contrast */
+            /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+        }
+
+        .welcome {
+            text-align: center;
+            border: 3px solid#705656;
+            border-radius: 25px;
+            margin-top: 10vh;
+            color: #fff;
+            background-color: #6a11cb;
+            /* background-image: linear-gradient(315deg, #6a11cb 0%, #2575fc 74%); */
+            background-image: linear-gradient(315deg, #11998e 0%, #38ef7d 74%);
+
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+
+        }
+
+        .enrolled-course-container {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            margin-top: 7vh;
+            width: 50vw;
+
+        }
+
+        .course1 {
+            border: 3px solid #705656;
+            border-radius: 25px;
+            padding: 2.5vw;
+            background-color: #11998e;
+            background-image: linear-gradient(315deg, #11998e 0%, #38ef7d 74%);
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+        }
+
+        .quranimg {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            box-shadow: 0px 10px 15px 20px rgba(90, 88, 88, 0.301);
+        }
+
+        * {
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        button.delete-btn {
+            background-color: #f44336;
+        }
+
+        button.delete-btn:hover {
+            background-color: #e53935;
+        }
+
+        button.edit-btn {
+            background-color: #ffa500;
+        }
+
+        button.edit-btn:hover {
+            background-color: #ff7043;
+        }
+    </style>
+</head>
+
+<body>
+    {{ template "navbar.html" . }}
+    <div class="intro" style="display: flex; width: 100vw;">
+
+        <div class="dashboard-container">
+            <div class="welcome">
+                <h3>Your ID: {{ .teacher.ID }}</h3>
+                <h3>Email:{{ .teacher.Email }}</h3>
+                <h3>Age:{{ .teacher.Age }}</h3>
+                <h1>Welcome, {{.user.name}}!</h1>
+                <h1>Welcome, {{.teacher.StudentsID}}!</h1>
+                <h3 style="color: rgb(226, 226, 226);">Always stay tuned in Dashboard</h3>
+            </div>
+        </div>
+        <div class="enrolled-course-container">
+            <div class="course1">
+                <h2>Enrolled Courses</h2>
+                <h3>{{.teacher.CourseName}}</h3>
+                <!-- <p>You completed 50% of course!</p> -->
+                <img src="/static/quran4.svg" class="quranimg" alt="">
+                <button>View</button>
+            </div>
+            <!-- <ul>
+            {{range.EnrolledCourses}}
+            <li>{{.Name}}</li>
+            {{end}}
+        </ul> -->
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Student Management System</h1>
+        <form id="studentForm" action="/addclass" method="POST">
+            <label for="number">Your ID:</label>
+            <input type="number" id="teacherid" name="teacherid"><br><br>
+            <label for="starttime">Start Time:</label>
+            <input type="datetime-local" id="starttime" name="starttime"><br><br>
+            <label for="endtime">End Time:</label>
+            <input type="datetime-local" id="endtime" name="endtime"><br><br>
+            <label for="coursename">Course Name:</label>
+            <input type="text" id="coursename" name="coursename"><br><br>
+            <button type="submit">Submit</button>
+        </form>
+
+        <h2>Student List</h2>
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Course</th>
+                    <th>Class ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .classes}}
+                <tr>
+
+                    <td class="starttime">{{.Start_Time}}</td>
+                    <td class="starttime">{{.End_Time}}</td>
+                    <td class="courseName">{{.CourseName}}</td>
+                    <td class="classid">{{.ID}}</td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteStudent()">Delete</button>
+                    </td>
+                </tr>
+                {{end}}
+                <!-- Dynamic Student List will appear here -->
+            </tbody>
+        </table>
+    </div>
+    <!-- <p>You have read {{.TotalRead}} Quran chapters and {{.TotalRevealed}} verses.</p> -->
+    <!-- <a href="/logout">Logout</a>
+    <a href="/profile">Profile</a>
+    <a href="/settings">Settings</a>
+    <a href="/about-us">About Us</a>
+    <a href="/contact">Contact</a>
+    <a href="/hadith">Hadith</a>
+    <a href="/search">Search</a>
+    <a href="/quran">Quran</a>
+    <a href="/read">Read</a>
+    <a href="/learn">Learn</a>
+    <a href="/notes">Notes</a>
+    <a href="/library">Library</a> -->
+
+</body>
+
+</html>

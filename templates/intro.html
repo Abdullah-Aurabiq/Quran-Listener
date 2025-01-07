@@ -7,25 +7,208 @@
     <title>Learn Quran 📔</title>
     <link rel="stylesheet" href="/static/style.css">
     <script src="/static/script.js"></script>
+    <style>
+        #startbtn {
+            background-color: #021aa7b2;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.5s ease;
+            /* filter: blur(6px); */
+        }
+
+        .cube {
+            position: relative;
+            right: 0;
+            top: 7vh;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
     <!-- Add navbar.html using golang's http -->
-    {{ template "navbar.html" . }}
+    <style>
+        body {
+            margin: 0%;
+            font-family: "/static/quicksand/Quicksand_Bold.otf";
+        }
+
+        /* Custom Font */
+        @font-face {
+            font-family: "/static/quicksand/Quicksand_Bold.otf";
+            src: url("/static/quicksand/Quicksand_Bold.otf");
+        }
+
+        /* Default styles for desktop */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            padding: 10px 20px;
+            background-color: white;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 1s linear;
+        }
+
+        .navbar>a {
+            text-decoration: none;
+            color: black;
+            margin: 0 15px;
+            font-size: 1.1em;
+            font-family: "/static/quicksand/Quicksand_Bold.otf";
+        }
+
+        .nav-to-account {
+            border-radius: 50px;
+            background-color: lightblue;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            position: relative;
+            /* Make sure it's relative to the parent */
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            z-index: 30;
+            top: 100%;
+            /* Position below the account button */
+            left: 0;
+        }
+
+        .dropdown-menu a {
+            text-decoration: none;
+            color: black;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
+
+            .navbar>a {
+                width: 100%;
+                text-align: left;
+                padding: 10px 15px;
+                font-size: 1.2em;
+            }
+
+            .nav-to-account {
+                width: 100%;
+                padding: 12px 20px;
+                text-align: left;
+            }
+
+            .dropdown-menu {
+                width: 100%;
+                position: static;
+                background-color: #f1f1f1;
+            }
+
+            .mobile-menu-icon {
+                display: block;
+                font-size: 2em;
+                margin: 10px 0;
+                cursor: pointer;
+            }
+
+            .navbar>.mobile-menu-icon {
+                display: none;
+                /* Hide menu icon by default on desktop */
+            }
+
+            .mobile-menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .mobile-menu a {
+                padding: 15px 20px;
+                text-align: left;
+            }
+        }
+    </style>
+    <!-- Desktop Navbar -->
+    <nav class="navbar">
+        <a class="nav-to-brand" href="/home">Home</a>
+        <a class="nav-to-about" href="/about-us/">About Us</a>
+        <a class="nav-to-contact" href="/contact-us/">Contact Us</a>
+
+        <!-- <div class="mobile-menu-icon" onclick="toggleMobileMenu()">&#9776;</div> -->
+    </nav>
+    <input type="checkbox" style="top: 50%; position: absolute; background-color: aqua; z-index: 100000000;"
+        class="nav-to-close" onchange="HideNavbar()"><span>🌫</span></input>
+
+    <script>
+        function HideNavbar() {
+            // check if checkbox is checked or not
+            const check = document.querySelector('.nav-to-close').checked;
+            if (check) {
+                document.querySelector('.navbar').style.transition = "all 1s linear";
+                document.querySelector('.navbar').style.top = '-100%';
+            } else {
+                document.querySelector('.navbar').style.transition = "all 0.1s linear";
+                document.querySelector('.navbar').style.top = '0%';
+            }
+        }
+
+        // For mobile menu toggle
+        function toggleMobileMenu() {
+            const navbar = document.querySelector(".navbar");
+            navbar.classList.toggle("mobile-menu");
+        }
+
+        // Highlight active page
+        let url = window.location.href;
+        if (url.includes("/home")) {
+            document.querySelector(".nav-to-home").style = "font-weight: bolder; color: blue;";
+        }
+        if (url.includes("/about-us")) {
+            document.querySelector(".nav-to-about").style = "font-weight: bolder; color: blue;";
+        }
+        if (url.includes("/contact-us")) {
+            document.querySelector(".nav-to-contact").style = "font-weight: bolder; color: blue;";
+        }
+
+    </script>
 
     <div class="bgcolor"
         style="width: 50vw; height: 50vh; background-color:#0088ff; border-radius: 50%; z-index: -123123123; position: fixed; top:20%; left: 20%;">
     </div>
     <div class="abstract">
         <div class="main-container">
-            <h1>Learn Quran ��</h1>
+            <h1>Learn Quran 📔</h1>
             <p>Welcome to the Quran Learning App! Here, you'll find the most comprehensive and accurate Quranic learning
                 material available. Select a surah and start learning its verses, reciting them, and exploring its
                 meanings.
             </p>
-            <a href="/start/"
-                style="background-color: #0088ff8c; color: white; text-decoration: none; border-radius: 25%; width: 500px;">Start
-                Learning</a>
+            <button onclick="start()" id="startbtn">Start Learning</button>
         </div>
         <div class="cube">
             <img src="/static/image-Photoroom.png" alt="">

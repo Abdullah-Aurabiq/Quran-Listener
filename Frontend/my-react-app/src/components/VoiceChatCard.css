@@ -1,0 +1,29 @@
+.voice-chat-card {
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    margin-top: 10px;
+    /* Add margin to avoid overlap */
+}
+
+.voice-chat-card.show {
+    max-height: 500px;
+    /* Adjust based on your content */
+    opacity: 1;
+}
+
+.voice-chat-card.hide {
+    max-height: 0;
+    opacity: 0;
+}
+
+.toggle-voice-card {
+    /* margin-top: 10px; */
+    /* Add margin to avoid overlap */
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1;
+    /* Ensure the button is above the voice card */
+}

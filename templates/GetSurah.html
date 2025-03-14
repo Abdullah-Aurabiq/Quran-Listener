@@ -277,6 +277,8 @@
 </head>
 
 <body>
+    {{ template "navbar.html" . }}
+
     <div id="container">
         <div class="div">
             <div class="card2" id="maincard">
@@ -295,7 +297,7 @@
 
 
                 <h1 id="surahname" style="color: white; justify-content: center; display: flex;" dir="rtl">
-                    {{.id}}surah</h1>
+                    {{.quran.id}}surah</h1>
                 <svg style="color: white; text-align: center; margin: auto; display: block;" dir="rtl"
                     baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" width="220" height="45" viewBox="0 0 176 36"
                     overflow="inherit" xml:space="preserve">
@@ -312,7 +314,7 @@
                     <!-- <h1> {{ .FinaleData }} </h1> -->
                     <h2 id="QuranVerse" style="color: white; margin: 10px; text-wrap: wrap; pointer-events: all;"
                         dir="rtl">
-                        {{.QuranVerse}}
+                        {{.quran.QuranVerse}}
                     </h2>
                     <!-- <button onclick="document.getElementById('audio').play()">Verse</button> -->
 
@@ -338,7 +340,7 @@
                     const QuranVerse = document.getElementById("QuranVerse");
 
 
-                    data = "{{ .FinaleData }}";  // Setting elem1.innerHTML to let obj = JSON.parse(elem1.innerHTML);  // Parsing the JSON string
+                    data = "{{ .quran.FinaleData }}";  // Setting elem1.innerHTML to let obj = JSON.parse(elem1.innerHTML);  // Parsing the JSON string
                     let obj = JSON.parse(data);  // Parsing the JSON string
                     console.log(obj);
 
@@ -386,7 +388,7 @@
 
 
             <!-- <h2 dir="rtl">{{ .scrapdata }}</h2> -->
-            <audio id="audio" class="audio" src="{{.audio}}" type="audio/mpeg"
+            <audio id="audio" class="audio" src="{{.quran.audio}}" type="audio/mpeg"
                 style="width: 100%; bottom: 0%; position: fixed; height: 48px; pointer-events: all;" controls></audio>
             <style>
                 audio {

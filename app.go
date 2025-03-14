@@ -15,6 +15,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
+	"github.com/rs/cors"
 )
 
 // App represents the application
@@ -25,6 +26,16 @@ type App struct {
 }
 
 var store = sessions.NewCookieStore([]byte("`giytIBFi0<.-3U,y$<!fdQFx$?@)}"))
+
+// SurahCardData represents the data structure for a Surah card
+type SurahCardData struct {
+	ID             int    `json:"id"`
+	EnglishName    string `json:"englishName"`
+	ArabicName     string `json:"arabicName"`
+	EnglishMeaning string `json:"englishMeaning"`
+	TotalVerses    int    `json:"totalVerses"`
+	StartingVerses string `json:"startingVerses"`
+}
 
 // New creates a new instance of App
 func (app *App) Initialize(Dbuser string, Dbpassword string, Dbname string) error {
@@ -42,10 +53,17 @@ func (app *App) Initialize(Dbuser string, Dbpassword string, Dbname string) erro
 
 // SetDB sets the database connection
 func (app *App) Run(address string) {
-	log.Fatal(http.ListenAndServe(address, app.Router))
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:5173"}, // Update with your frontend URL
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+	})
+	handler := c.Handler(app.Router)
+	log.Fatal(http.ListenAndServe(address, handler))
 }
 
-const API = "https://www.mp3quran.net/api/"
+const API = "https://www.mp3quran.net/api/_arabic_sura.php"
 
 // StripTashkeel removes Arabic diacritics from the input text.
 func StripTashkeel(text string) string {
@@ -91,11 +109,29 @@ func GetSuraName(suraNumber int) (string, error) {
 		return "", fmt.Errorf("invalid sura number: sura not found '%d'", suraNumber)
 	}
 
-	response, err := http.Get(API + "_arabic_sura.php")
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", API, nil)
+	if err != nil {
+		return "", err
+	}
+
+	// Add headers to the request
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Accept-Language", "en-US,en;q=0.5")
+	req.Header.Set("Referer", "https://www.mp3quran.net/")
+	req.Header.Set("Connection", "keep-alive")
+	req.Header.Set("Cache-Control", "no-cache")
+
+	response, err := client.Do(req)
 	if err != nil {
 		return "", err
 	}
 	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("failed to fetch sura name: %s", response.Status)
+	}
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
@@ -107,7 +143,7 @@ func GetSuraName(suraNumber int) (string, error) {
 	}
 	err = json.Unmarshal(body, &suras)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("{error: 'failed to unmarshal JSON'} %v", err)
 	}
 
 	for _, sura := range suras.SurasName {
@@ -264,11 +300,18 @@ func getQuran(w http.ResponseWriter, req *http.Request) {
 		SurahIDs = strconv.Itoa(SurahID)
 	}
 	fmt.Println(SurahIDs)
-	Data := map[string]string{
+	session, _ := store.Get(req, "session")
+	fmt.Println(session.Values)
+	qu := map[string]string{
+
 		"SurahName":  string(surahname),
 		"FinaleData": ar_en,
 		"audio":      audioUrl,
 		"id":         SurahIDs,
+	}
+	Data := map[string]interface{}{
+		"user":  session.Values,
+		"quran": qu,
 		// "englishQuran": English_output,
 		// "arabicQuran":  arabic_output,
 	}
@@ -360,49 +403,6 @@ func Search(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (app *App) GetStudentClasses(w http.ResponseWriter, r *http.Request) {
-
-	classes, err := GetClasses(app.DB)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	// Send the response with the template
-	sendResponse(w, http.StatusOK, classes, "templates/classes.html", "text/html; charset=UTF-8")
-
-}
-func (app *App) CreateStudentClasses(w http.ResponseWriter, r *http.Request) {
-
-	var cl Class
-	if r.FormValue("coursename") != "" {
-
-		TeacherID, _ := strconv.Atoi(r.FormValue("teacherid"))
-		CourseName := r.FormValue("coursename")
-		startTimeStr := r.FormValue("starttime")
-		endTimeStr := r.FormValue("endtime")
-
-		cl.TeacherID = TeacherID
-		cl.CourseName = CourseName
-		cl.Start_Time = startTimeStr
-		cl.End_Time = endTimeStr
-		fmt.Println(cl)
-		err := cl.CreateClass(app.DB)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		// sendResponse(w, http.StatusOK, nil, "templates/classcreated.html", "text/html; charset=UTF-8")
-
-	}
-	classes, err := GetClasses(app.DB)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	sendResponse(w, http.StatusOK, classes, "templates/createclass.html", "text/html; charset=UTF-8")
-
-}
-
 func Home(w http.ResponseWriter, r *http.Request) {
 	// Send the response with the template
 	sendResponse(w, http.StatusOK, nil, "templates/index.html", "text/html; charset=UTF-8")
@@ -451,95 +451,47 @@ func Intro(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "session")
 	auth, ok := session.Values["authenticated"].(bool)
 	if ok || auth {
-		http.Redirect(w, r, "/dashboard?check=1", http.StatusFound)
+		http.Redirect(w, r, "/quran/", http.StatusFound)
 		return
 	} else {
 		sendResponse(w, http.StatusOK, nil, "templates/intro.html", "text/html; charset=UTF-8")
 	}
 }
 func contact_us(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "session")
-	auth, ok := session.Values["authenticated"].(bool)
-	if !ok || !auth {
-		http.Redirect(w, r, "/login", http.StatusFound)
-		return
-	}
+	// session, _ := store.Get(r, "session")
+	// auth, ok := session.Values["authenticated"].(bool)
+	// if !ok || !auth {
+	// 	http.Redirect(w, r, "/login", http.StatusFound)
+	// 	return
+	// }
 	data := map[string]interface{}{
-		"user": session.Values,
+		"user": map[string]string{"username": "sd"},
 	}
 	sendResponse(w, http.StatusOK, data, "templates/contact-us.html", "text/html; charset=UTF-8")
 }
 func about_us(w http.ResponseWriter, r *http.Request) {
 	sendResponse(w, http.StatusOK, nil, "templates/about-us.html", "text/html; charset=UTF-8")
 }
-func (app *App) StudentStart(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "session")
-	auth, ok := session.Values["authenticated"].(bool)
-	if !ok || !auth {
-		http.Redirect(w, r, "/login", http.StatusFound)
-		return
-	}
-	// Get all courses
-	courses, err := GetAllCourses(app.DB)
-	if err != nil {
-		sendError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-	fmt.Println(courses)
-	fmt.Println(session.Values)
-	// Create a new payload
-	data := map[string]interface{}{
-		"courses": courses,
-		"user":    session.Values,
-	}
-	// Send the response with the template
-	sendResponse(w, http.StatusOK, data, "templates/start.html", "text/html; charset=UTF-8")
-}
-func (app *App) MyStudents(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "session")
-	auth, ok := session.Values["authenticated"].(bool)
-	if !ok || !auth {
-		http.Redirect(w, r, "/login/teacher", http.StatusFound)
-		return
-	}
-	// Get all courses
-	students, err := GetAllStudents(app.DB)
-	if err != nil {
-		sendError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-	fmt.Println(students)
-	// Send the response with the template
-	sendResponse(w, http.StatusOK, students, "templates/mystudents.html", "text/html; charset=UTF-8")
-}
-
-func (app *App) StudentSignup(w http.ResponseWriter, r *http.Request) {
-	var st Student
-	// Get the component from url
-	// vars := mux.Vars(r)
-	// fmt.Println(vars)
-
-	// // Validate the input
-	name := r.FormValue("name")
-	age := r.FormValue("age")
+func (app *App) SignupAPI(w http.ResponseWriter, r *http.Request) {
+	var st Users
+	username := r.FormValue("username")
 	gender := r.FormValue("gender")
 	email := r.FormValue("email")
 	password := r.FormValue("password")
-	conmfirm_password := r.FormValue("confirmpassword")
-	fmt.Println(name, email, password, conmfirm_password)
-	st.Name = name
+	confirmPassword := r.FormValue("confirmpassword")
+	fmt.Println(username, email, password, confirmPassword)
+	st.UserName = username
 	st.Email = email
 	st.Password = password
 	st.Gender = gender
-	st.Age, _ = strconv.Atoi(age)
-	if password != conmfirm_password {
+	if password != confirmPassword {
 		sendError(w, http.StatusBadRequest, "Passwords do not match")
 		return
 	}
 
-	if name != "" || email != "" || password != "" {
-		// Create Student account
-		err := st.CreateStudentAccount(app.DB)
+	if username != "" && email != "" && password != "" {
+		// Create User account
+		err := st.CreateUserAccount(app.DB)
 		if err != nil {
 			sendError(w, http.StatusInternalServerError, err.Error())
 			return
@@ -547,83 +499,87 @@ func (app *App) StudentSignup(w http.ResponseWriter, r *http.Request) {
 		// Create a session for the user
 		session, _ := store.Get(r, "session")
 		session.Values["email"] = st.Email
-		session.Values["name"] = st.Name
+		session.Values["username"] = st.UserName
 		session.Values["authenticated"] = true
 		err = session.Save(r, w)
 		if err != nil {
 			sendError(w, http.StatusInternalServerError, "Failed to save session")
 			return
 		}
-		http.Redirect(w, r, "/start/", http.StatusFound)
+
+		// Prepare the response data
+		responseData := map[string]interface{}{
+			"email":         st.Email,
+			"username":      st.UserName,
+			"authenticated": true,
+		}
+
+		// Convert response data to JSON
+		jsonData, err := json.Marshal(responseData)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Set the content type to application/json and write the JSON response
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(jsonData)
+		return
 	}
 
-	sendResponse(w, http.StatusOK, nil, "templates/signup.html", "text/html; charset=UTF-8")
+	sendError(w, http.StatusBadRequest, "Invalid input")
 }
 
-func (app *App) StudentLogin(w http.ResponseWriter, r *http.Request) {
+func (app *App) LoginAPI(w http.ResponseWriter, r *http.Request) {
 	// Parse form values
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
 	// Validate input
 	if email == "" || password == "" {
-		sendResponse(w, http.StatusOK, nil, "templates/login.html", "text/html; charset=UTF-8")
-		// sendError(w, http.StatusBadRequest, "Email and password are required")
+		http.Error(w, "Email and password are required", http.StatusBadRequest)
 		return
 	}
-	var st Student
+
+	var st Users
 	st.Email = email
 	st.Password = password
-	err := st.LoginStudent(app.DB)
+	err := st.UserLogin(app.DB)
 	if err != nil {
-		sendError(w, http.StatusInternalServerError, err.Error())
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	// Create a session for the user
 	session, _ := store.Get(r, "session")
 	session.Values["email"] = st.Email
-	session.Values["name"] = st.Name
+	session.Values["username"] = st.UserName
 	session.Values["authenticated"] = true
 	err = session.Save(r, w)
 	if err != nil {
-		sendError(w, http.StatusInternalServerError, "Failed to save session")
+		http.Error(w, "Failed to save session", http.StatusInternalServerError)
 		return
 	}
-	http.Redirect(w, r, "/start/", http.StatusFound)
 
-}
-
-func (app *App) TeacherLogin(w http.ResponseWriter, r *http.Request) {
-	// Parse form values
-	email := r.FormValue("email")
-	password := r.FormValue("password")
-
-	// Validate input
-	if email == "" || password == "" {
-		sendResponse(w, http.StatusOK, nil, "templates/tlogin.html", "text/html; charset=UTF-8")
-		// sendError(w, http.StatusBadRequest, "Email and password are required")
-		return
+	// Prepare the response data
+	responseData := map[string]interface{}{
+		"email":         st.Email,
+		"username":      st.UserName,
+		"authenticated": true,
 	}
-	var t Teacher
-	t.Email = email
-	t.Password = password
-	err := t.LoginTeacher(app.DB)
+
+	// Convert response data to JSON
+	jsonData, err := json.Marshal(responseData)
 	if err != nil {
-		sendError(w, http.StatusInternalServerError, err.Error())
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// Create a session for the user
-	session, _ := store.Get(r, "session")
-	session.Values["email"] = t.Email
-	session.Values["name"] = t.Name
-	session.Values["authenticated"] = true
-	err = session.Save(r, w)
-	if err != nil {
-		sendError(w, http.StatusInternalServerError, "Failed to save session")
-		return
-	}
-	http.Redirect(w, r, "/dashboard/teacher", http.StatusFound)
 
+	// Set the content type to application/json and write the JSON response
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(jsonData)
 }
 
 func (app *App) Logout(w http.ResponseWriter, r *http.Request) {
@@ -632,144 +588,259 @@ func (app *App) Logout(w http.ResponseWriter, r *http.Request) {
 	session.Save(r, w)
 	http.Redirect(w, r, "/login", http.StatusFound)
 }
-
-func (app *App) StudentDashboard(w http.ResponseWriter, r *http.Request) {
-	check := r.FormValue("check")
-	session, _ := store.Get(r, "session")
-	auth, ok := session.Values["authenticated"].(bool)
-	if !ok || !auth {
-		http.Redirect(w, r, "/login", http.StatusFound)
+func getQuranAPI(w http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	SurahID, e := strconv.Atoi(vars["id"])
+	if e != nil {
+		sendResponse(w, http.StatusBadRequest, "Invalid surah number", "", "application/json")
 		return
 	}
-	var st Student
-	st.Name = session.Values["name"].(string)
-	st.Email = session.Values["email"].(string)
-	student, err := st.GetStudent(app.DB)
-	if err.Error() == "sql: no rows in result set" && check == "1" {
-		http.Redirect(w, r, "/dashboard/teacher", http.StatusFound)
+	// Get query parameters for Arabic version and translation
+	// arabicVersion := req.URL.Query().Get("ar")
+	// if arabicVersion == "" {
+	// 	arabicVersion = "quran-uthmani-hafs" // default value
+	// }
+	translation := req.URL.Query().Get("translation")
+	if translation == "" {
+		translation = "en.sahih" // default value
 	}
+	// Fetch Surah name
+	// surahname, err := GetSuraName(SurahID)
+	// if err != nil {
+	// 	fmt.Println("Error:", err)
+	// } else {
+	// 	fmt.Println("Sura Name:", surahname)
+	// }
+
+	// Fetch English version from API
+	quranen := NewQG("http://api.globalquran.com/surah/", "", map[string]string{"ar": translation, "en": translation}, 10)
+	language := "en"
+	ayahInfosen, err := quranen.getAyah(SurahID, 1, language)
 	if err != nil {
-		sendError(w, http.StatusInternalServerError, err.Error())
-		fmt.Println(err.Error())
+		fmt.Println(err)
 		return
 	}
-	data := map[string]interface{}{
-		"user":    session.Values,
-		"student": student,
-	}
-	sendResponse(w, http.StatusOK, data, "templates/dashboard.html", "text/html; charset=UTF-8")
+	ayahInfoseng, _ := json.Marshal(ayahInfosen)
 
-}
-func (app *App) TeacherDashboard(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "session")
-	auth, ok := session.Values["authenticated"].(bool)
-	if !ok || !auth {
-		http.Redirect(w, r, "/login", http.StatusFound)
-		return
-	}
-	var t Teacher
-	t.Name = session.Values["name"].(string)
-	t.Email = session.Values["email"].(string)
-	teacher, err := t.GetTeacher(app.DB)
+	// Read Arabic version from local JSON file
+	filePath := fmt.Sprintf("d:/Py code/Quran Listener/surahs/%03d.json", SurahID)
+	fileData, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		sendError(w, http.StatusInternalServerError, err.Error())
+		http.Error(w, "Failed to read surah data", http.StatusInternalServerError)
 		return
 	}
-	var cl Class
-	if r.FormValue("coursename") != "" {
 
-		TeacherID, _ := strconv.Atoi(r.FormValue("teacherid"))
-		CourseName := r.FormValue("coursename")
-		startTimeStr := r.FormValue("starttime")
-		endTimeStr := r.FormValue("endtime")
-
-		cl.TeacherID = TeacherID
-		cl.CourseName = CourseName
-		cl.Start_Time = startTimeStr
-		cl.End_Time = endTimeStr
-		fmt.Println(cl)
-		err := cl.CreateClass(app.DB)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		// sendResponse(w, http.StatusOK, nil, "templates/classcreated.html", "text/html; charset=UTF-8")
-
+	var arabicData map[string]interface{}
+	err = json.Unmarshal(fileData, &arabicData)
+	if err != nil {
+		http.Error(w, "Failed to parse surah data", http.StatusInternalServerError)
+		return
 	}
-	classes, err := GetClasses(app.DB)
+
+	// Process English version
+	English_try := string(ayahInfoseng)
+	English_try = strings.ReplaceAll(English_try, "map[quran:map[en.qaribullah:map[", "s")
+	English_try = strings.ReplaceAll(English_try, "]]]]", "")
+
+	var Englishdata map[string]map[string]map[int]Verse
+	err = json.Unmarshal([]byte(English_try), &Englishdata)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	var English_verses []Verse
+	for _, innerMap := range Englishdata["quran"][translation] {
+		English_verses = append(English_verses, innerMap)
+	}
+
+	sort.Slice(English_verses, func(i, j int) bool {
+		return English_verses[i].Ayah < English_verses[j].Ayah
+	})
+
+	// Process Arabic version
+	arabicVerses := arabicData["quran"].(map[string]interface{})["quran-uthmani-hafs"].(map[string]interface{})
+	var Arabic_verses []Verse
+	for _, v := range arabicVerses {
+		verse := v.(map[string]interface{})
+		Arabic_verses = append(Arabic_verses, Verse{
+			Ayah:  int(verse["ayah"].(float64)),
+			Verse: verse["verse"].(string),
+		})
+	}
+
+	sort.Slice(Arabic_verses, func(i, j int) bool {
+		return Arabic_verses[i].Ayah < Arabic_verses[j].Ayah
+	})
+
+	// Combine Arabic and English verses
+	var combinedVerses []map[string]string
+	for i := 0; i < len(English_verses) && i < len(Arabic_verses); i++ {
+		combinedVerses = append(combinedVerses, map[string]string{
+			"ar": Arabic_verses[i].Verse,
+			"en": English_verses[i].Verse,
+		})
+	}
+
+	// Convert combined verses to JSON
+	jsonData, err := json.Marshal(combinedVerses)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	data := map[string]interface{}{
-		"user":    session.Values,
-		"teacher": teacher,
-		"classes": classes,
+
+	audioUrl, _ := getAudio(SurahID)
+	var SurahIDs string
+	if SurahID < 10 {
+		SurahIDs = "00" + strconv.Itoa(SurahID)
+	} else if SurahID < 100 {
+		SurahIDs = "0" + strconv.Itoa(SurahID)
+	} else if SurahID >= 100 {
+		SurahIDs = strconv.Itoa(SurahID)
 	}
 
-	sendResponse(w, http.StatusOK, data, "templates/tdashboard.html", "text/html; charset=UTF-8")
+	qu := map[string]string{
+		// "SurahName":  string(surahname),
+		"FinaleData": string(jsonData),
+		"audio":      audioUrl,
+		"id":         SurahIDs,
+	}
+	Data := map[string]interface{}{
+		"quran": qu,
+	}
+	s, _ := json.Marshal(Data)
 
+	// Set the content type to application/json and write the JSON response
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(s)
 }
 
-func (app *App) TeacherStart(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "session")
-	auth, ok := session.Values["authenticated"].(bool)
-	if !ok || !auth {
-		http.Redirect(w, r, "/login/teacher", http.StatusFound)
-		return
+func convertSessionValues(values map[interface{}]interface{}) map[string]interface{} {
+	converted := make(map[string]interface{})
+	for k, v := range values {
+		strKey, ok := k.(string)
+		if !ok {
+			continue
+		}
+		converted[strKey] = v
 	}
-	// Get all courses
-	courses, err := GetAllCourses(app.DB)
+	return converted
+}
+func SearchAPI(w http.ResponseWriter, r *http.Request) {
+	// Get the query parameter from the URL
+	query := r.URL.Query().Get("q")
+
+	url := fmt.Sprintf("https://api.quran.com/api/v4/search?q=%v&size=200&page=1&language=en", query)
+	method := "GET"
+
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
-		sendError(w, http.StatusInternalServerError, err.Error())
+		fmt.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	fmt.Println(courses)
-	fmt.Println(session.Values)
-	// Create a new payload
-	data := map[string]interface{}{
-		"courses": courses,
-		"user":    session.Values,
+
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
-	// Send the response with the template
-	sendResponse(w, http.StatusOK, data, "templates/tstart.html", "text/html; charset=UTF-8")
+	defer res.Body.Close()
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	strbody := string(body)
+	if query == "" {
+		strbody = "Try To Search Up There 👆"
+	}
+
+	Data := map[string]string{
+		"SearchData": strbody,
+	}
+
+	// Convert Data map to JSON
+	jsonData, err := json.Marshal(Data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Set the content type to application/json and write the JSON response
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(jsonData)
 }
-func (app *App) Blogs(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "session")
-	auth, ok := session.Values["authenticated"].(bool)
-	if !ok || !auth {
-		http.Redirect(w, r, "/home", http.StatusFound)
+func getSurahs(w http.ResponseWriter, req *http.Request) {
+	var surahs []SurahCardData
+	// var filteredSurahs []SurahCardData
+
+	// Read the surahs.json file
+	data, err := ioutil.ReadFile("surahs.json")
+	if err != nil {
+		http.Error(w, "Failed to read surah data", http.StatusInternalServerError)
 		return
 	}
-	// Create a new payload
-	data := map[string]interface{}{
-		"user": session.Values,
+
+	// Parse the JSON data
+	err = json.Unmarshal(data, &surahs)
+	if err != nil {
+		http.Error(w, "Failed to parse surah data", http.StatusInternalServerError)
+		return
 	}
-	// Send the response with the template
-	sendResponse(w, http.StatusOK, data, "templates/blogs.html", "text/html; charset=UTF-8")
+
+	// Filter Surahs based on criteria (favorite, recently viewed, prayer times)
+	// for _, surah := range surahs {
+	// 	if isFavorite(surah.ID) || isRecentlyViewed(surah.ID) || isRelatedToPrayerTime(surah.ID) {
+	// 		filteredSurahs = append(filteredSurahs, surah)
+	// 	}
+	// }
+
+	// Convert to JSON and send response
+	jsonResponse, err := json.Marshal(surahs)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonResponse)
+}
+
+// Helper functions to determine if a Surah meets the criteria
+func isFavorite(surahID int) bool {
+	// Implement logic to check if the Surah is marked as favorite
+	return false
+}
+
+func isRecentlyViewed(surahID int) bool {
+	// Implement logic to check if the Surah is recently viewed
+	return false
+}
+
+func isRelatedToPrayerTime(surahID int) bool {
+	// Implement logic to check if the Surah is related to the current prayer time
+	return false
 }
 
 func (app *App) handleRoutes() {
-	app.Router.HandleFunc("/quran/{id}", getQuran).Methods("GET")
-	app.Router.HandleFunc("/quran/", Home)
-	app.Router.HandleFunc("/search/", Search)
-	app.Router.HandleFunc("/hadith/", Hadith)
-	app.Router.HandleFunc("/home/", Intro)
+	// app.Router.HandleFunc("/home/", Intro)
+	app.Router.HandleFunc("/api/hadith/", Hadith)
 	app.Router.HandleFunc("/contact-us/", contact_us)
-	app.Router.HandleFunc("/about-us/", about_us)
-	app.Router.HandleFunc("/start/", app.StudentStart)
-	app.Router.HandleFunc("/start/teacher", app.TeacherStart)
-	app.Router.HandleFunc("/mystudents/", app.MyStudents)
-	app.Router.HandleFunc("/register", app.StudentSignup)
-	app.Router.HandleFunc("/login", app.StudentLogin)
-	app.Router.HandleFunc("/login/teacher", app.TeacherLogin)
-	app.Router.HandleFunc("/logout", app.Logout)
-	app.Router.HandleFunc("/dashboard", app.StudentDashboard)
-	app.Router.HandleFunc("/dashboard/teacher", app.TeacherDashboard)
-	app.Router.HandleFunc("/cl", app.GetStudentClasses)
-	app.Router.HandleFunc("/addclass", app.CreateStudentClasses)
-	app.Router.HandleFunc("/blog", app.Blogs)
-	// app.Router.HandleFunc("/start/", Start)
+	// app.Router.HandleFunc("/about-us/", about_us)
+	app.Router.HandleFunc("/api/register", app.SignupAPI)
+	app.Router.HandleFunc("/api/login", app.LoginAPI)
+	app.Router.HandleFunc("/api/logout", app.Logout)
+	app.Router.HandleFunc("/api/quran/{id}", getQuranAPI).Methods("GET")
+	app.Router.HandleFunc("/api/search/", SearchAPI)
+	app.Router.HandleFunc("/api/surahs", getSurahs).Methods("GET")
 
 	// Host the static folder for resources route
 	fs := http.FileServer(http.Dir("./static/"))

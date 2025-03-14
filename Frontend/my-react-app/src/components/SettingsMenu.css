@@ -1,0 +1,20 @@
+.settings-menu {
+    background-color: #2a2f3b;
+    padding: 10px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    z-index: 1000;
+    color: white;
+}
+
+.settings-menu label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.settings-menu input[type="checkbox"],
+.settings-menu input[type="number"] {
+    margin-left: 10px;
+}

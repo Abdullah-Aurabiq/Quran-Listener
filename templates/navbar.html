@@ -20,9 +20,10 @@
         top: 0;
         padding: 10px 20px;
         background-color: white;
-        z-index: 10;
+        z-index: 9999;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         transition: all 1s linear;
+
     }
 
     .navbar>a {
@@ -184,8 +185,8 @@
     <a class="nav-to-brand" href="/home">Home</a>
     <a class="nav-to-about" href="/about-us/">About Us</a>
     <a class="nav-to-contact" href="/contact-us/">Contact Us</a>
-    <a class="nav-to-account" onclick="toggleMenu()">{{ .user.name }} <span>▼</span></a>
-
+    <a class="nav-to-account" onclick="toggleMenu()">{{ .user.username }} <span>▼</span></a>
+    <script>alert(`{{.user.name}}`)</script>
     <!-- Dropdown Menu -->
     <div class="dropdown-menu">
         <a href="/dashboard?check=1">Dashboard</a>

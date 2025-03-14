@@ -1,0 +1,172 @@
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('https://quran.com/fonts/quran/hafs/uthmanic_hafs/UthmanicHafs1Ver18.woff2') format('woff2'),
+        url('https://quran.com/fonts/quran/hafs/uthmanic_hafs/UthmanicHafs1Ver18.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'fahd';
+    src: url('http://localhost:1481/static/p49.woff') format('woff'),
+        url('http://localhost:1481/static/p49.woff2') format('woff2');
+}
+
+
+.verse-card {
+    position: relative;
+    width: 98%;
+    background-color: #1f2125;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    gap: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    margin: 10px auto;
+    min-height: 50vh;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    text-indent: 15px;
+    text-wrap: normal;
+
+}
+
+/* .verse-card.highlighted {
+    background-color: #FFD700; */
+/* } */
+
+.verse-arabic.glow {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* .verse-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    left: -5px;
+    margin: auto;
+    width: calc(100% + 50px);
+    height: calc(100% + 50px);
+    border-radius: 10px;
+    background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
+    z-index: -10;
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.verse-card::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100%);
+    transform: translate3d(0, 0, 0) scale(0.95);
+    filter: blur(20px);
+}
+ */
+/* .verse-card:hover::after {
+    filter: blur(30px);
+} */
+.highlighted-word {
+    background-color: yellow;
+    color: black;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.verse-arabic {
+    font-family: 'MyCustomFont', serif;
+    font-size: 1.3em;
+    margin-bottom: 8px;
+    text-align: right;
+    line-height: 1.5em;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.verse-english {
+    font-family: 'Arial', sans-serif;
+    text-align: left;
+    line-height: 1.5em;
+    font-size: .7em;
+    direction: ltr;
+}
+
+.heading {
+    font-size: 20px;
+    text-transform: capitalize;
+    font-weight: 700;
+}
+
+.verse-card p:not(.heading) {
+    font-size: 14px;
+}
+
+.verse-card p:last-child {
+    color: #e81cff;
+    font-weight: 600;
+}
+
+.verse-end-icon {
+    font-size: 1.2em;
+    color: #FFD700;
+    /* Gold color for the icon */
+    margin-left: 5px;
+    border-radius: 50%;
+    padding: 2px 6px;
+    display: inline-block;
+    text-align: center;
+}
+
+.verse-end-icon {
+    font-size: 1.2em;
+    color: #FFD700;
+    /* Gold color for the icon */
+    margin-left: 5px;
+    display: inline-block;
+    text-align: center;
+}
+
+.verse-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+.verse-menu button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: .5em;
+    padding: 5px;
+}
+
+.menu-dropdown {
+    position: absolute;
+    /* right: 0; */
+    top: -80px;
+    background-color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.menu-dropdown button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: .6em;
+    padding: 5px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

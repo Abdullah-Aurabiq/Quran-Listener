@@ -30,7 +30,7 @@ const Quran = ({ surahId }) => {
     useEffect(() => {
         const fetchVersions = async () => {
             try {
-                const response = await axios.get('http://localhost:1481/static/qurantext.json');
+                const response = await axios.get('http://localhost:1481/static/quranar/qurantext.json');
                 setVersions(response.data.quranList);
             } catch (err) {
                 console.error('Error fetching versions:', err);

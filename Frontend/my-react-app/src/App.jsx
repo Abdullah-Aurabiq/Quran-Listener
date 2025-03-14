@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     const fetchSurahs = async () => {
       try {
-        const response = await axios.get('http://localhost:1481/api/surahs');
+        const response = await axios.get('http://localhost:1481/api/static/surahs');
         setSurahs(response.data);
         setLoading(false);
       } catch (error) {

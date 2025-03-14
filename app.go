@@ -623,7 +623,7 @@ func getQuranAPI(w http.ResponseWriter, req *http.Request) {
 	ayahInfoseng, _ := json.Marshal(ayahInfosen)
 
 	// Read Arabic version from local JSON file
-	filePath := fmt.Sprintf("d:/Py code/Quran Listener/surahs/%03d.json", SurahID)
+	filePath := fmt.Sprintf("d:/Py code/Quran Listener/static/surahs/%03d.json", SurahID)
 	fileData, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		http.Error(w, "Failed to read surah data", http.StatusInternalServerError)

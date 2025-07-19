@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -628,7 +629,10 @@ func getQuranAPI(w http.ResponseWriter, req *http.Request) {
 	ayahInfoseng, _ := json.Marshal(ayahInfosen)
 
 	// Read Arabic version from local JSON file
-	filePath := fmt.Sprintf("D:/F(DRIVE/Quran Listener/static/quranar/surahs/%03d.json", SurahID)
+	// filePath := fmt.Sprintf("D:/F(DRIVE/Quran Listener/static/quranar/surahs/%03d.json", SurahID)
+	// request https://electric-mistakenly-rat.ngrok-free.app/static/quranar/surahs/%03d.json for filePath
+	filePath := fmt.Sprintf("http://electric-mistakenly-rat.ngrok-free.app/static/quranar/surahs/%03d.json", SurahID)
+
 	fileData, err := ioutil.ReadFile(filePath)
 	// fmt.Println(string(fileData))
 	if err != nil {
@@ -790,9 +794,17 @@ func getSurahs(w http.ResponseWriter, req *http.Request) {
 	// var filteredSurahs []SurahCardData
 
 	// Read the surahs.json file
-	data, err := ioutil.ReadFile("D:/F(DRIVE/Quran Listener/static/surahs.json")
+	url := "https://electric-mistakenly-rat.ngrok-free.app/static/surahs.json"
+	resp, err := http.Get(url)
 	if err != nil {
-		http.Error(w, "Failed to read surah data", http.StatusInternalServerError)
+		fmt.Println("Error:", err)
+		http.Error(w, "Failed to fetch surah data", http.StatusInternalServerError)
+		return
+	}
+	defer resp.Body.Close()
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		http.Error(w, "Failed to read response body", http.StatusInternalServerError)
 		return
 	}
 

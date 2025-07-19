@@ -30,7 +30,7 @@ const Quran = ({ surahId }) => {
     useEffect(() => {
         const fetchVersions = async () => {
             try {
-                const response = await axios.get('http://localhost:1481/static/quranar/quran.json');
+                const response = await axios.get('https://electric-mistakenly-rat.ngrok-free.app/static/quranar/quran.json');
                 setVersions(response.data.quranList);
             } catch (err) {
                 console.error('Error fetching versions:', err);
@@ -39,7 +39,7 @@ const Quran = ({ surahId }) => {
 
         const fetchReciters = async () => {
             try {
-                const response = await axios.get('http://localhost:1481/static/reciters.json');
+                const response = await axios.get('https://electric-mistakenly-rat.ngrok-free.app/static/reciters.json');
                 setReciters(response.data.reciters);
                 setSelectedReciter(response.data.reciters[0]); // Set default reciter
             } catch (err) {
@@ -54,7 +54,7 @@ const Quran = ({ surahId }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:1481/api/quran/${surahId}?ar=${arabicVersion}&translation=${translation}`);
+                const response = await axios.get(`https://electric-mistakenly-rat.ngrok-free.app/api/quran/${surahId}?ar=${arabicVersion}&translation=${translation}`);
                 setData(response.data);
                 console.log(response.data);
             } catch (err) {
@@ -70,7 +70,7 @@ const Quran = ({ surahId }) => {
     // useEffect(() => {
     //     const fetchTranscription = async () => {
     //         try {
-    //             const transcription = await axios.get(`http://localhost:1481/static/067_transcription.json`);
+    //             const transcription = await axios.get(`https://electric-mistakenly-rat.ngrok-free.app/static/067_transcription.json`);
     //             const words = transcription.data;
     //             console.log('Transcription data:', words);
     //         } catch (err) {
@@ -83,7 +83,7 @@ const Quran = ({ surahId }) => {
         // const handleTimeUpdate = async () => {
         //     const currentTime = audioRef.current.currentTime;
         //     console.log(`Current time: ${currentTime}`);
-        //     const transcription = await axios.get(`http://localhost:1481/static/108_transcription.json`);
+        //     const transcription = await axios.get(`https://electric-mistakenly-rat.ngrok-free.app/static/108_transcription.json`);
         //     const words = transcription.data;
 
         //     for (let i = 0; i < words.length; i++) {

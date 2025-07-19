@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     const fetchSurahs = async () => {
       try {
-        const response = await axios.get('http://localhost:1481/api/surahs');
+        const response = await axios.get('https://electric-mistakenly-rat.ngrok-free.app/api/surahs');
         setSurahs(response.data);
         setLoading(false);
       } catch (error) {

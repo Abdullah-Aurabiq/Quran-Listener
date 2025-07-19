@@ -50,11 +50,16 @@ func (app *App) Initialize(Dbuser string, Dbpassword string, Dbname string) erro
 	app.handleRoutes()
 	return nil
 }
+func enableCors(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*") // Use specific origin in production
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+}
 
 // SetDB sets the database connection
 func (app *App) Run(address string) {
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173"}, // Update with your frontend URL
+		AllowedOrigins:   []string{"http://localhost:5174"}, // Update with your frontend URL
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
 		AllowedHeaders:   []string{"Content-Type", "Authorization"},
 		AllowCredentials: true,
@@ -248,7 +253,7 @@ func getQuran(w http.ResponseWriter, req *http.Request) {
 	var English_output string
 	for _, verse := range English_verses {
 		English_output += fmt.Sprintf("%s[%d]A8ea8", verse.Verse, verse.Ayah)
-		// fmt.Printf("English: Verse %d: %s\n", verse.Ayah, verse.Verse)
+		// fmt.Printf("English: Verse %E: %s\n", verse.Ayah, verse.Verse)
 	}
 
 	var arabic_data map[string]map[string]map[int]Verse
@@ -273,7 +278,7 @@ func getQuran(w http.ResponseWriter, req *http.Request) {
 	var arabic_output string
 	for _, verse := range arabic_verses {
 		arabic_output += fmt.Sprintf("%s[%d]A8ea8", verse.Verse, verse.Ayah)
-		// fmt.Printf("Arabic: Verse %d: %s\n", verse.Ayah, verse.Verse)
+		// fmt.Printf("Arabic: Verse %E: %s\n", verse.Ayah, verse.Verse)
 	}
 	ar := strings.Split(arabic_output, "A8ea8")
 	en := strings.Split(English_output, "A8ea8")
@@ -623,9 +628,11 @@ func getQuranAPI(w http.ResponseWriter, req *http.Request) {
 	ayahInfoseng, _ := json.Marshal(ayahInfosen)
 
 	// Read Arabic version from local JSON file
-	filePath := fmt.Sprintf("d:/Py code/Quran Listener/static/surahs/%03d.json", SurahID)
+	filePath := fmt.Sprintf("D:/F(DRIVE/Quran Listener/static/quranar/surahs/%03d.json", SurahID)
 	fileData, err := ioutil.ReadFile(filePath)
+	// fmt.Println(string(fileData))
 	if err != nil {
+		fmt.Println(err)
 		http.Error(w, "Failed to read surah data", http.StatusInternalServerError)
 		return
 	}
@@ -783,7 +790,7 @@ func getSurahs(w http.ResponseWriter, req *http.Request) {
 	// var filteredSurahs []SurahCardData
 
 	// Read the surahs.json file
-	data, err := ioutil.ReadFile("surahs.json")
+	data, err := ioutil.ReadFile("D:/F(DRIVE/Quran Listener/static/surahs.json")
 	if err != nil {
 		http.Error(w, "Failed to read surah data", http.StatusInternalServerError)
 		return
@@ -792,6 +799,7 @@ func getSurahs(w http.ResponseWriter, req *http.Request) {
 	// Parse the JSON data
 	err = json.Unmarshal(data, &surahs)
 	if err != nil {
+		fmt.Println("Error:", err)
 		http.Error(w, "Failed to parse surah data", http.StatusInternalServerError)
 		return
 	}

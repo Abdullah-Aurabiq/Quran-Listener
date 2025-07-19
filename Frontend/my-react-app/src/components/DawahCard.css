@@ -11,9 +11,9 @@
 }
 
 
-.verse-card {
+.dawah-card {
     position: relative;
-    width: 98%;
+    width: 85vw;
     background-color: #1f2125;
     display: flex;
     flex-direction: column;
@@ -31,15 +31,15 @@
 
 }
 
-/* .verse-card.highlighted {
+/* .dawah-card.highlighted {
     background-color: #FFD700; */
 /* } */
 
-.verse-arabic.glow {
+.dawah-arabic.glow {
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-/* .verse-card::before {
+/* .dawah-card::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -54,7 +54,7 @@
     transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.verse-card::after {
+.dawah-card::after {
     content: "";
     z-index: -1;
     position: absolute;
@@ -64,7 +64,7 @@
     filter: blur(20px);
 }
  */
-/* .verse-card:hover::after {
+/* .dawah-card:hover::after {
     filter: blur(30px);
 } */
 .highlighted-word {
@@ -74,16 +74,16 @@
     border-radius: 3px;
 }
 
-.verse-arabic {
+.dawah-arabic {
     font-family: 'MyCustomFont', serif;
     font-size: 1.3em;
     margin-bottom: 8px;
-    text-align: right;
+    text-align: center;
     line-height: 1.5em;
     text-shadow: 0 0 3px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-.verse-english {
+.dawah-english {
     font-family: 'Arial', sans-serif;
     text-align: left;
     line-height: 1.5em;
@@ -97,16 +97,16 @@
     font-weight: 700;
 }
 
-.verse-card p:not(.heading) {
+.dawah-card p:not(.heading) {
     font-size: 14px;
 }
 
-.verse-card p:last-child {
+.dawah-card p:last-child {
     color: #e81cff;
     font-weight: 600;
 }
 
-.verse-end-icon {
+.dawah-end-icon {
     font-size: 1.2em;
     color: #FFD700;
     /* Gold color for the icon */
@@ -117,7 +117,7 @@
     text-align: center;
 }
 
-.verse-end-icon {
+.dawah-end-icon {
     font-size: 1.2em;
     color: #FFD700;
     /* Gold color for the icon */
@@ -126,7 +126,7 @@
     text-align: center;
 }
 
-.verse-menu {
+.dawah-menu {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -136,7 +136,7 @@
     top: 10px;
 }
 
-.verse-menu button {
+.dawah-menu button {
     background: none;
     border: none;
     color: white;
@@ -169,4 +169,50 @@
     display: flex;
     align-items: center;
     gap: 5px;
+}
+.slider-wrapper {
+    background-color: transparent;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    /* overflow: hidden; */
+}
+
+.slider {
+    display: flex;
+    height: 100vh;
+    transition: transform 0.6s ease-in-out;
+}
+
+.slide {
+    flex: 0 0 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-button {
+    position: absolute;
+    top: 50vh;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    border: none;
+    padding: 2vh 3vw;
+    font-size: 2vh;
+    border-radius: 1vh;
+    cursor: pointer;
+}
+/* change .nav-button's background color on hovering .dawah-card */
+.dawah-card:hover .nav-button {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.nav-button.back {
+    left: .5vw;
+}
+
+.nav-button.next {
+    right: .5vw;
 }

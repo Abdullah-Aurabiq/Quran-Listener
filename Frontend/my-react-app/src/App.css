@@ -1,30 +1,50 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  /* padding: 2rem; */
-  text-align: center;
-  /* background-color: #1f2125; */
+/* Set all divs in center except those divs who have class name of "verse-card" and with "verse-arabic" and with "verse-english" */
+/* #QuranVerse { */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+/* } */
+#QuranVerse, #surahname, .surah-cards-container, #DVerse {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    left: 3vw;
+    position: relative;
 }
-
 @font-face {
   font-family: 'MyCustomFont';
-  src: url('https://quran.com/fonts/quran/hafs/uthmanic_hafs/UthmanicHafs1Ver18.woff2') format('woff2'),
-    url('https://quran.com/fonts/quran/hafs/uthmanic_hafs/UthmanicHafs1Ver18.woff2') format('woff2');
+  src: url('http://localhost:1481/static/fonts/UthmanicHafs1Ver18.woff2') format('woff2'),
+    url('http://localhost:1481/static/fonts/UthmanicHafs1Ver18.woff2') format('woff2');
 }
 
 @font-face {
   font-family: 'fahd';
-  src: url('http://localhost:1481/static/UthmanTN_v2-0.ttf') format('ttf'),
-    url('http://localhost:1481/static/UthmanTN_v2-0.ttf') format('ttf');
+  src: url('http://localhost:1481/static/fonts/UthmanTN_v2-0.ttf') format('ttf'),
+    url('http://localhost:1481/static/fonts/UthmanTN_v2-0.ttf') format('ttf');
 }
 
 @font-face {
   font-family: 'surahs';
-  src: url('https://quran.com/fonts/quran/surah-names/v1/sura_names.woff2') format('woff2'),
-    url('https://quran.com/fonts/quran/surah-names/v1/sura_names.woff2') format('woff2');
+  src: url('http://localhost:1481/static/fonts/sura_names.woff2') format('woff2'),
+    url('http://localhost:1481/static/fonts/sura_names.woff2') format('woff2');
 }
 
 #QuranVerse {
+  font-family: 'MyCustomFont', sans-serif;
+  font-optical-sizing: auto;
+  /* font-weight: 500; */
+  font-size: 6vh;
+  background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
+  font-style: normal;
+  line-height: 4.8vh;
+  border-radius: 25px;
+  /* padding: 7rem; */
+  padding: 7rem;
+  width: 79vw;
+}
+#DVerse {
   font-family: 'MyCustomFont', sans-serif;
   font-optical-sizing: auto;
   /* font-weight: 500; */

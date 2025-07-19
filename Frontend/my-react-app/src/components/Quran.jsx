@@ -30,7 +30,7 @@ const Quran = ({ surahId }) => {
     useEffect(() => {
         const fetchVersions = async () => {
             try {
-                const response = await axios.get('http://localhost:1481/static/quranar/qurantext.json');
+                const response = await axios.get('http://localhost:1481/static/quranar/quran.json');
                 setVersions(response.data.quranList);
             } catch (err) {
                 console.error('Error fetching versions:', err);
@@ -67,68 +67,68 @@ const Quran = ({ surahId }) => {
         fetchData();
     }, [surahId, arabicVersion, translation]);
 
-    useEffect(() => {
-        const fetchTranscription = async () => {
-            try {
-                const transcription = await axios.get(`http://localhost:1481/static/067_transcription.json`);
-                const words = transcription.data;
-                console.log('Transcription data:', words);
-            } catch (err) {
-                console.error('Error fetching transcription:', err);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchTranscription = async () => {
+    //         try {
+    //             const transcription = await axios.get(`http://localhost:1481/static/067_transcription.json`);
+    //             const words = transcription.data;
+    //             console.log('Transcription data:', words);
+    //         } catch (err) {
+    //             console.error('Error fetching transcription:', err);
+    //         }
+    //     };
 
-        fetchTranscription();
+    //     fetchTranscription();
 
-        const handleTimeUpdate = async () => {
-            const currentTime = audioRef.current.currentTime;
-            console.log(`Current time: ${currentTime}`);
-            const transcription = await axios.get(`http://localhost:1481/static/108_transcription.json`);
-            const words = transcription.data;
+        // const handleTimeUpdate = async () => {
+        //     const currentTime = audioRef.current.currentTime;
+        //     console.log(`Current time: ${currentTime}`);
+        //     const transcription = await axios.get(`http://localhost:1481/static/108_transcription.json`);
+        //     const words = transcription.data;
 
-            for (let i = 0; i < words.length; i++) {
-                if (currentTime >= words[i].start && currentTime <= words[i].end) {
-                    console.log(`Current word: ${words[i].word}`);
-                    setCurrentWord(words[i].word);
-                    setCurrentVerseIndex(i);
-                    setShowModal(true);
-                    break;
-                }
-            }
-        };
+        //     for (let i = 0; i < words.length; i++) {
+        //         if (currentTime >= words[i].start && currentTime <= words[i].end) {
+        //             console.log(`Current word: ${words[i].word}`);
+        //             setCurrentWord(words[i].word);
+        //             setCurrentVerseIndex(i);
+        //             setShowModal(true);
+        //             break;
+        //         }
+        //     }
+        // };
 
-        const handlePlay = () => {
-            console.log('Audio is playing');
-        };
+        // const handlePlay = () => {
+        //     console.log('Audio is playing');
+        // };
 
-        const handlePause = () => {
-            console.log('Audio is paused');
-        };
+        // const handlePause = () => {
+        //     console.log('Audio is paused');
+        // };
 
-        const handleEnded = () => {
-            console.log('Audio has ended');
-        };
+        // const handleEnded = () => {
+        //     console.log('Audio has ended');
+        // };
 
-        if (audioRef.current) {
-            console.log('Adding event listeners to audio element');
-            audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-            audioRef.current.addEventListener('play', handlePlay);
-            audioRef.current.addEventListener('pause', handlePause);
-            audioRef.current.addEventListener('ended', handleEnded);
-        } else {
-            console.log('audioRef.current is null');
-        }
+        // if (audioRef.current) {
+        //     console.log('Adding event listeners to audio element');
+        //     audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
+        //     audioRef.current.addEventListener('play', handlePlay);
+        //     audioRef.current.addEventListener('pause', handlePause);
+        //     audioRef.current.addEventListener('ended', handleEnded);
+        // } else {
+        //     console.log('audioRef.current is null');
+        // }
 
-        return () => {
-            if (audioRef.current) {
-                console.log('Removing event listeners from audio element');
-                audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
-                audioRef.current.removeEventListener('play', handlePlay);
-                audioRef.current.removeEventListener('pause', handlePause);
-                audioRef.current.removeEventListener('ended', handleEnded);
-            }
-        };
-    }, [audioRef.current]);
+    //     return () => {
+    //         if (audioRef.current) {
+    //             console.log('Removing event listeners from audio element');
+    //             audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+    //             audioRef.current.removeEventListener('play', handlePlay);
+    //             audioRef.current.removeEventListener('pause', handlePause);
+    //             audioRef.current.removeEventListener('ended', handleEnded);
+    //         }
+    //     };
+    // }, [audioRef.current]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
@@ -149,14 +149,14 @@ const Quran = ({ surahId }) => {
                 {data.quran.id}surah
             </h1>
             <div>
-                <label>
+                {/* <label>
                     Translation:
                     <CustomDropdown
                         options={Object.keys(versions)}
                         selectedOption={translation}
                         onChange={setTranslation}
                     />
-                </label>
+                </label> */}
                 <button onClick={() => setShowSettings(!showSettings)}>Settings</button>
                 {showSettings && <SettingsMenu settings={settings} setSettings={setSettings} />}
             </div>

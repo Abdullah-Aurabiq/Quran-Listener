@@ -47,7 +47,7 @@ const VerseCard = ({ arabic, english, verseNumber, currentWord }) => {
     }, []);
 
     const highlightWord = (text) => {
-        console.log(`Highlighting word: ${currentWord}`);
+        // console.log(`Highlighting word: ${currentWord}`);
         return text.split(' ').map((word, index) => (
             <span key={index} className={word === currentWord ? 'highlighted-word' : ''}>
                 {word}{' '}

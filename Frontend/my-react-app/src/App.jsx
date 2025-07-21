@@ -4,8 +4,8 @@ import './App.css';
 import SurahList from './components/SurahList';
 import SurahCard from './components/SurahCard';
 import Quran from './components/Quran';
-import axios from 'axios';
 import Dawah from './components/Dawah';
+import axios from 'axios';
 
 function App() {
   const [surahs, setSurahs] = useState([]);
@@ -14,64 +14,57 @@ function App() {
   useEffect(() => {
     const fetchSurahs = async () => {
       try {
-        const response = await axios.get('https://electric-mistakenly-rat.ngrok-free.app/api/surahs');
+        const response = await axios.get('/surahs.json'); // ✅ from /public
         setSurahs(response.data);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching Surahs:', error);
+      } finally {
         setLoading(false);
       }
     };
-
     fetchSurahs();
   }, []);
 
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home surahs={surahs} loading={loading} />} />
+        <Route path="/" element={<Home surahs={surahs} loading={loading} />} />
         <Route path="/:surahId/:ayahId?" element={<SurahView />} />
-        <Route path="/dawah" element={<Dawah/>} />
+        <Route path="/dawah" element={<Dawah />} />
       </Routes>
     </Router>
   );
 }
 
 function Home({ surahs, loading }) {
-  const [surahId, setSurahId] = useState(null);
   const navigate = useNavigate();
 
   const handleSelectSurah = (id) => {
-    setSurahId(id);
-    const selectedSurah = surahs.find((surah) => surah.id === id);
-    if (selectedSurah) {
-      navigate(`/${selectedSurah.id}`, { replace: true });
-    }
+    navigate(`/${id}`);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div>
       <SurahList onSelectSurah={handleSelectSurah} />
-      {!surahId && (
-        <div className="surah-cards-container">
-          {surahs.map((surah) => (
-            <SurahCard key={surah.id} surah={surah} onSelectSurah={handleSelectSurah} />
-          ))}
-        </div>
-      )}
-      {surahId && <Quran surahId={surahId} />}
+      <div className="surah-cards-container">
+        {surahs.map((surah) => (
+          <SurahCard key={surah.id} surah={surah} onSelectSurah={handleSelectSurah} />
+        ))}
+      </div>
     </div>
   );
 }
 
 function SurahView() {
   const { surahId, ayahId } = useParams();
-
-  return <Quran surahId={parseInt(surahId, 10)} ayahId={ayahId ? parseInt(ayahId, 10) : null} />;
+  return (
+    <Quran
+      surahId={parseInt(surahId, 10)}
+      ayahId={ayahId ? parseInt(ayahId, 10) : null}
+    />
+  );
 }
 
 export default App;

@@ -1,0 +1,914 @@
+[
+    {
+        "id": 1,
+        "englishName": "Al-Faatiha",
+        "arabicName": "ٱلْفَاتِحَةِ",
+        "englishMeaning": "The Opening",
+        "totalVerses": 7,
+        "startingVerses": "In the name of God, The Most Gracious, The Dispenser of Grace:"
+    },
+    {
+        "id": 2,
+        "englishName": "Al-Baqara",
+        "arabicName": "البَقَرَةِ",
+        "englishMeaning": "The Cow",
+        "totalVerses": 286,
+        "startingVerses": "All praise is due to God alone, the Sustainer of all the worlds,"
+    },
+    {
+        "id": 3,
+        "englishName": "Aal-i-Imraan",
+        "arabicName": "آلِ عِمۡرَانَ",
+        "englishMeaning": "The Family of Imraan",
+        "totalVerses": 200,
+        "startingVerses": "The Most Gracious, the Dispenser of Grace,"
+    },
+    {
+        "id": 4,
+        "englishName": "An-Nisaa",
+        "arabicName": "النِّسَاءِ",
+        "englishMeaning": "The Women",
+        "totalVerses": 176,
+        "startingVerses": "Lord of the Day of Judgment!"
+    },
+    {
+        "id": 5,
+        "englishName": "Al-Maaida",
+        "arabicName": "المَائـِدَةِ",
+        "englishMeaning": "The Table",
+        "totalVerses": 120,
+        "startingVerses": "Thee alone do we worship; and unto Thee alone do we turn for aid."
+    },
+    {
+        "id": 6,
+        "englishName": "Al-An'aam",
+        "arabicName": "الأَنۡعَامِ",
+        "englishMeaning": "The Cattle",
+        "totalVerses": 165,
+        "startingVerses": "Guide us the straight way."
+    },
+    {
+        "id": 7,
+        "englishName": "Al-A'raaf",
+        "arabicName": "الأَعۡرَافِ",
+        "englishMeaning": "The Heights",
+        "totalVerses": 206,
+        "startingVerses": "The way of those upon whom Thou hast bestowed Thy blessings, not of those who have been condemned [by Thee], nor of those who go astray!"
+    },
+    {
+        "id": 8,
+        "englishName": "Al-Anfaal",
+        "arabicName": "الأَنفَالِ",
+        "englishMeaning": "The Spoils of War",
+        "totalVerses": 75,
+        "startingVerses": "Alif. Lam. Mim."
+    },
+    {
+        "id": 9,
+        "englishName": "At-Tawba",
+        "arabicName": "التَّوۡبَةِ",
+        "englishMeaning": "The Repentance",
+        "totalVerses": 129,
+        "startingVerses": "THIS DIVINE WRIT - let there be no doubt about it is [meant to be] a guidance for all the God-conscious."
+    },
+    {
+        "id": 10,
+        "englishName": "Yunus",
+        "arabicName": "يُونُسَ",
+        "englishMeaning": "Jonas",
+        "totalVerses": 109,
+        "startingVerses": "Who believe in [the existence of] that which is beyond the reach of human perception, and are constant in prayer, and spend on others out of what We provide for them as sustenance;"
+    },
+    {
+        "id": 11,
+        "englishName": "Hud",
+        "arabicName": "هُودٍ",
+        "englishMeaning": "Hud",
+        "totalVerses": 123,
+        "startingVerses": "And who believe in that which has been bestowed from on high upon thee, [O Prophet,] as well as in that which was bestowed before thy time: for it is they who in their innermost are certain of the life to come!"
+    },
+    {
+        "id": 12,
+        "englishName": "Yusuf",
+        "arabicName": "يُوسُفَ",
+        "englishMeaning": "Joseph",
+        "totalVerses": 111,
+        "startingVerses": "It is they who follow the guidance [which comes from their Sustainer; and it is they, they who' shall attain to a happy state!"
+    },
+    {
+        "id": 13,
+        "englishName": "Ar-Ra'd",
+        "arabicName": "الرَّعۡدِ",
+        "englishMeaning": "The Thunder",
+        "totalVerses": 43,
+        "startingVerses": "BEHOLD, as for those who are bent on denying the truth - it is all one to them whether thou warnest them or dost not warn them: they will not believe."
+    },
+    {
+        "id": 14,
+        "englishName": "Ibrahim",
+        "arabicName": "إِبۡرَاهِيمَ",
+        "englishMeaning": "Abraham",
+        "totalVerses": 52,
+        "startingVerses": "God; has sealed their hearts and their hearing, and over their eyes is a veil; and awesome suffering awaits them."
+    },
+    {
+        "id": 15,
+        "englishName": "Al-Hijr",
+        "arabicName": "الحِجۡرِ",
+        "englishMeaning": "The Rock",
+        "totalVerses": 99,
+        "startingVerses": "And there are people who say, \"We do believe in God and the Last Day,\" the while they do not [really] believe."
+    },
+    {
+        "id": 16,
+        "englishName": "An-Nahl",
+        "arabicName": "النَّحۡلِ",
+        "englishMeaning": "The Bee",
+        "totalVerses": 128,
+        "startingVerses": "They would deceive God and those who have attained to faith-the while they deceive none but themselves, and perceive it not."
+    },
+    {
+        "id": 17,
+        "englishName": "Al-Israa",
+        "arabicName": "الإِسۡرَاءِ",
+        "englishMeaning": "The Night Journey",
+        "totalVerses": 111,
+        "startingVerses": "In their hearts is disease, and so God lets their disease increase; and grievous suffering awaits them because of their persistent lying."
+    },
+    {
+        "id": 18,
+        "englishName": "Al-Kahf",
+        "arabicName": "الكَهۡفِ",
+        "englishMeaning": "The Cave",
+        "totalVerses": 110,
+        "startingVerses": "And when they are told, \"Do not spread corruption on earth,\" they answer, \"We are but improving things!\""
+    },
+    {
+        "id": 19,
+        "englishName": "Maryam",
+        "arabicName": "مَرۡيَمَ",
+        "englishMeaning": "Mary",
+        "totalVerses": 98,
+        "startingVerses": "Oh, verily, it is they, they who are spreading corruption but they perceive it not?"
+    },
+    {
+        "id": 20,
+        "englishName": "Taa-Haa",
+        "arabicName": "طه",
+        "englishMeaning": "Taa-Haa",
+        "totalVerses": 135,
+        "startingVerses": "And when they are told, \"Believe as other people believe,\" they answer, \"Shall we believe as the weak-minded believe?\" Oh, verily, it is they, they who are weak-minded -but they know it not!"
+    },
+    {
+        "id": 21,
+        "englishName": "Al-Anbiyaa",
+        "arabicName": "الأَنبِيَاءِ",
+        "englishMeaning": "The Prophets",
+        "totalVerses": 112,
+        "startingVerses": "And when they meet those who have attained to faith, they assert, \"We believe [as you believe]\"; but when they find themselves alone with their- evil impulses, they say, \"Verily, we are with you; we were only mocking!\""
+    },
+    {
+        "id": 22,
+        "englishName": "Al-Hajj",
+        "arabicName": "الحَجِّ",
+        "englishMeaning": "The Pilgrimage",
+        "totalVerses": 78,
+        "startingVerses": "God will requite them for their mockery, and will leave them for a while in their overweening arrogance, blindly stumbling to and fro:"
+    },
+    {
+        "id": 23,
+        "englishName": "Al-Muminoon",
+        "arabicName": "المُؤۡمِنُونَ",
+        "englishMeaning": "The Believers",
+        "totalVerses": 118,
+        "startingVerses": "[for] it is they who have taken error in exchange for guidance; and neither has their bargain brought them gain, nor have they found guidance [elsewhere]."
+    },
+    {
+        "id": 24,
+        "englishName": "An-Noor",
+        "arabicName": "النُّورِ",
+        "englishMeaning": "The Light",
+        "totalVerses": 64,
+        "startingVerses": "Their parable is that of people who kindle a fire: but as soon as it has illumined all around them, God takes away their light and leaves them in utter darkness, wherein they cannot see:"
+    },
+    {
+        "id": 25,
+        "englishName": "Al-Furqaan",
+        "arabicName": "الفُرۡقَانِ",
+        "englishMeaning": "The Criterion",
+        "totalVerses": 77,
+        "startingVerses": "Deaf, dumb, blind - and they cannot turn back."
+    },
+    {
+        "id": 26,
+        "englishName": "Ash-Shu'araa",
+        "arabicName": "الشُّعَرَاءِ",
+        "englishMeaning": "The Poets",
+        "totalVerses": 227,
+        "startingVerses": "Or [the parable] of a violent cloudburst in the sky, with utter darkness, thunder and lightning: they put their fingers into their ears to keep out the peals of thunder, in terror of death; but God encompasses [with His might] all who deny the truth."
+    },
+    {
+        "id": 27,
+        "englishName": "An-Naml",
+        "arabicName": "النَّمۡلِ",
+        "englishMeaning": "The Ant",
+        "totalVerses": 93,
+        "startingVerses": "The lightning well-nigh takes away their sight; whenever it gives them light, they advance therein, and whenever darkness falls around them, they stand still. And if God so willed, He could indeed take away their hearing and their sight: for, verily, God has the power to will anything."
+    },
+    {
+        "id": 28,
+        "englishName": "Al-Qasas",
+        "arabicName": "القَصَصِ",
+        "englishMeaning": "The Stories",
+        "totalVerses": 88,
+        "startingVerses": "O MANKIND! Worship your Sustainer, who has created you and those who lived before you, so that you might remain conscious of Him"
+    },
+    {
+        "id": 29,
+        "englishName": "Al-Ankaboot",
+        "arabicName": "العَنكَبُوتِ",
+        "englishMeaning": "The Spider",
+        "totalVerses": 69,
+        "startingVerses": "who has made the earth a resting-place for you and the sky a canopy, and has sent down water from the sky and thereby brought forth fruits for your sustenance: do not, then, claim that there is any power that could rival God, when you know [that He is One]."
+    },
+    {
+        "id": 30,
+        "englishName": "Ar-Room",
+        "arabicName": "الرُّومِ",
+        "englishMeaning": "The Romans",
+        "totalVerses": 60,
+        "startingVerses": "And if you doubt any part of what We have, bestowed from on high, step by step, upon Our servant [Muhammad], then produce a surah of similar merit, and call upon any other than God to bear witness for you -if what you say is true!"
+    },
+    {
+        "id": 31,
+        "englishName": "Luqman",
+        "arabicName": "لُقۡمَانَ",
+        "englishMeaning": "Luqman",
+        "totalVerses": 34,
+        "startingVerses": "And if you cannot do it-and most certainly you cannot do it-then be conscious of the fire whose fuel is human beings and stones which awaits all who deny the truth!"
+    },
+    {
+        "id": 32,
+        "englishName": "As-Sajda",
+        "arabicName": "السَّجۡدَةِ",
+        "englishMeaning": "The Prostration",
+        "totalVerses": 30,
+        "startingVerses": "But unto those who have attained to faith and do good works give the glad tiding that theirs shall be gardens through which running waters flow. Whenever they are granted fruits there from as their appointed sustenance, they will say, \"It is this that in days of yore was granted to us as our sustenance!\"-for they shall be given something that will recall that [past]. And there shall they have spouses pure, and there shall they abide."
+    },
+    {
+        "id": 33,
+        "englishName": "Al-Ahzaab",
+        "arabicName": "الأَحۡزَابِ",
+        "englishMeaning": "The Clans",
+        "totalVerses": 73,
+        "startingVerses": "Behold, God does not disdain to propound a parable of a gnat, or of something [even] less than that. Now, as for those who have attained to faith, they know that it is the truth from their Sustainer - whereas those who are bent on denying the truth say, \"What could God mean by this parable?\" In this way does He cause many a one to go astray, just as He guides many a one aright: but none does He cause thereby to go astray save the iniquitous,"
+    },
+    {
+        "id": 34,
+        "englishName": "Saba",
+        "arabicName": "سَبَإٍ",
+        "englishMeaning": "Sheba",
+        "totalVerses": 54,
+        "startingVerses": "who break their bond with God after it has been established [in their nature], and cut asunder what God has bidden to be joined, and spread corruption on earth: these it is that shall be the losers."
+    },
+    {
+        "id": 35,
+        "englishName": "Faatir",
+        "arabicName": "فَاطِرٍ",
+        "englishMeaning": "The Originator",
+        "totalVerses": 45,
+        "startingVerses": "How can you refuse to acknowledge God, seeing that you were lifeless and He gave you life, and that He will cause you to die and then will bring you again to life, whereupon unto Him you will be brought back?"
+    },
+    {
+        "id": 36,
+        "englishName": "Yaseen",
+        "arabicName": "يسٓ",
+        "englishMeaning": "Yaseen",
+        "totalVerses": 83,
+        "startingVerses": "He it is who has created for you all that is on earth, and has applied His design to the heavens and fashioned them into seven heavens; and He alone has full knowledge of everything."
+    },
+    {
+        "id": 37,
+        "englishName": "As-Saaffaat",
+        "arabicName": "الصَّافَّاتِ",
+        "englishMeaning": "Those drawn up in Ranks",
+        "totalVerses": 182,
+        "startingVerses": "AND LO! Thy Sustainer said unto the angels: \"Behold, I am about to establish upon earth one who shall inherit it.\" They said: \"Wilt Thou place on it such as will spread corruption thereon and shed blood -whereas it is we who extol Thy limitless glory, and praise Thee, and hallow Thy name?\" [God] answered: \"Verily, I know that which you do not know.\""
+    },
+    {
+        "id": 38,
+        "englishName": "Saad",
+        "arabicName": "صٓ",
+        "englishMeaning": "The letter Saad",
+        "totalVerses": 88,
+        "startingVerses": "And He imparted unto Adam the names of all things; then He brought them within the ken of the angels and said: \"Declare unto Me the names of these [things], if what you say is true.\""
+    },
+    {
+        "id": 39,
+        "englishName": "Az-Zumar",
+        "arabicName": "الزُّمَرِ",
+        "englishMeaning": "The Groups",
+        "totalVerses": 75,
+        "startingVerses": "They replied: \"Limitless art Thou in Thy glory! No knowledge have we save that which Thou hast imparted unto us. Verily, Thou alone art all-knowing, truly wise.\""
+    },
+    {
+        "id": 40,
+        "englishName": "Ghafir",
+        "arabicName": "غَافِرٍ",
+        "englishMeaning": "The Forgiver",
+        "totalVerses": 85,
+        "startingVerses": "Said He: \"O Adam, convey unto them the names of these [things].\" And as soon as [Adam] had conveyed unto them their names, [God] said: \"Did I not say unto you, `Verily, I alone know the hidden reality of the heavens and the earth, and know all that you bring into the open and all. that you would conceal'?\""
+    },
+    {
+        "id": 41,
+        "englishName": "Fussilat",
+        "arabicName": "فُصِّلَتۡ",
+        "englishMeaning": "Explained in detail",
+        "totalVerses": 54,
+        "startingVerses": "And when We told the angels, \"Prostrate yourselves before Adam!\" -they all prostrated themselves, save Iblis, who refused and gloried in his arrogance: and thus he became one of those who deny the truth."
+    },
+    {
+        "id": 42,
+        "englishName": "Ash-Shura",
+        "arabicName": "الشُّورَىٰ",
+        "englishMeaning": "Consultation",
+        "totalVerses": 53,
+        "startingVerses": "And We said: \"O Adam, dwell thou and thy wife in this garden, and eat freely thereof, both of you, whatever you may wish; but do not approach this one tree, lest you become wrongdoers.\""
+    },
+    {
+        "id": 43,
+        "englishName": "Az-Zukhruf",
+        "arabicName": "الزُّخۡرُفِ",
+        "englishMeaning": "Ornaments of gold",
+        "totalVerses": 89,
+        "startingVerses": "But Satan caused them both to stumble therein, and thus brought about the loss of their erstwhile state. And so We said: \"Down with you, [and be henceforth] enemies unto one another; and on earth you shall have your abode and your livelihood for a while!\""
+    },
+    {
+        "id": 44,
+        "englishName": "Ad-Dukhaan",
+        "arabicName": "الدُّخَانِ",
+        "englishMeaning": "The Smoke",
+        "totalVerses": 59,
+        "startingVerses": "Thereupon Adam received words [of guidance] from his Sustainer, and He accepted his repentance: for, verily, He alone is the-Acceptor of Repentance, the Dispenser of Grace."
+    },
+    {
+        "id": 45,
+        "englishName": "Al-Jaathiya",
+        "arabicName": "الجَاثِيَةِ",
+        "englishMeaning": "Crouching",
+        "totalVerses": 37,
+        "startingVerses": "[For although] We did say, \"Down with you all from this [state],\" there shall, none the less, most certainly come unto you guidance from Me: and those who follow My guidance need have no fear, and neither shall they grieve;"
+    },
+    {
+        "id": 46,
+        "englishName": "Al-Ahqaf",
+        "arabicName": "الأَحۡقَافِ",
+        "englishMeaning": "The Dunes",
+        "totalVerses": 35,
+        "startingVerses": "but those who are bent on denying the truth and giving the lie to Our messages - they are destined for the fire, and therein shall they abide."
+    },
+    {
+        "id": 47,
+        "englishName": "Muhammad",
+        "arabicName": "مُحَمَّدٍ",
+        "englishMeaning": "Muhammad",
+        "totalVerses": 38,
+        "startingVerses": "O CHILDREN of Israel! Remember those blessings of Mine with which I graced you, and fulfil your promise unto Me, [whereupon] I shall fulfil My promise unto you; and of Me, of Me stand in awe!"
+    },
+    {
+        "id": 48,
+        "englishName": "Al-Fath",
+        "arabicName": "الفَتۡحِ",
+        "englishMeaning": "The Victory",
+        "totalVerses": 29,
+        "startingVerses": "Believe in that which I have [now] bestowed from on high, confirming the truth already in your possession, and be not foremost among those who deny its truth; and do not barter away My messages for a trifling gain; and of Me, of Me be conscious"
+    },
+    {
+        "id": 49,
+        "englishName": "Al-Hujuraat",
+        "arabicName": "الحُجُرَاتِ",
+        "englishMeaning": "The Inner Apartments",
+        "totalVerses": 18,
+        "startingVerses": "And do not overlay the truth with falsehood, and do not knowingly suppress the truth;"
+    },
+    {
+        "id": 50,
+        "englishName": "Qaaf",
+        "arabicName": "قٓ",
+        "englishMeaning": "The letter Qaaf",
+        "totalVerses": 45,
+        "startingVerses": "and be constant in prayer, and spend in charity, and bow down in prayer with all who thus bow down."
+    },
+    {
+        "id": 51,
+        "englishName": "Adh-Dhaariyat",
+        "arabicName": "الذَّارِيَاتِ",
+        "englishMeaning": "The Winnowing Winds",
+        "totalVerses": 60,
+        "startingVerses": "Do you bid other people to be pious, the while you forget your own selves -and yet you recite the divine writ? Will you not, then, use your reason?;"
+    },
+    {
+        "id": 52,
+        "englishName": "At-Tur",
+        "arabicName": "الطُّورِ",
+        "englishMeaning": "The Mount",
+        "totalVerses": 49,
+        "startingVerses": "And seek aid in steadfast patience and prayer: and this, indeed, is a hard thing for all but the humble in spirit,"
+    },
+    {
+        "id": 53,
+        "englishName": "An-Najm",
+        "arabicName": "النَّجۡمِ",
+        "englishMeaning": "The Star",
+        "totalVerses": 62,
+        "startingVerses": "who know with certainty that they shall meet their Sustainer and that unto Him they shall return."
+    },
+    {
+        "id": 54,
+        "englishName": "Al-Qamar",
+        "arabicName": "القَمَرِ",
+        "englishMeaning": "The Moon",
+        "totalVerses": 55,
+        "startingVerses": "O children of Israel! Remember those blessings of Mine with which I graced you, and how I favoured you above all other people;"
+    },
+    {
+        "id": 55,
+        "englishName": "Ar-Rahmaan",
+        "arabicName": "الرَّحۡمَٰن",
+        "englishMeaning": "The Beneficent",
+        "totalVerses": 78,
+        "startingVerses": "and remain conscious of [the coming of] a Day when no human being shall in the least avail another, nor shall intercession be accepted from any of them, nor ransom taken from them, and none shall be succoured."
+    },
+    {
+        "id": 56,
+        "englishName": "Al-Waaqia",
+        "arabicName": "الوَاقِعَةِ",
+        "englishMeaning": "The Inevitable",
+        "totalVerses": 96,
+        "startingVerses": "And [remember the time] when We saved you from Pharaoh's people, who afflicted you with cruel suffering, slaughtering your sons and sparing [only] your women - which was an awesome trial from your Sustainer;"
+    },
+    {
+        "id": 57,
+        "englishName": "Al-Hadid",
+        "arabicName": "الحَدِيدِ",
+        "englishMeaning": "The Iron",
+        "totalVerses": 29,
+        "startingVerses": "and when We cleft the sea before you, and thus saved you and caused Pharaoh's people to drown before your very eyes;"
+    },
+    {
+        "id": 58,
+        "englishName": "Al-Mujaadila",
+        "arabicName": "المُجَادلَةِ",
+        "englishMeaning": "The Pleading Woman",
+        "totalVerses": 22,
+        "startingVerses": "and when We appointed for Moses forty nights [on Mount Sinai], and in his absence you took to worshipping the [golden] calf, and thus became evildoers:"
+    },
+    {
+        "id": 59,
+        "englishName": "Al-Hashr",
+        "arabicName": "الحَشۡرِ",
+        "englishMeaning": "The Exile",
+        "totalVerses": 24,
+        "startingVerses": "yet, even after that, We blotted out this your sin, so that you might have cause to be grateful."
+    },
+    {
+        "id": 60,
+        "englishName": "Al-Mumtahana",
+        "arabicName": "المُمۡتَحنَةِ",
+        "englishMeaning": "She that is to be examined",
+        "totalVerses": 13,
+        "startingVerses": "And [remember the time] when We vouchsafed unto Moses the divine writ-and [thus] a standard by which to discern the true from the false -so that you might be guided aright;"
+    },
+    {
+        "id": 61,
+        "englishName": "As-Saff",
+        "arabicName": "الصَّفِّ",
+        "englishMeaning": "The Ranks",
+        "totalVerses": 14,
+        "startingVerses": "and when Moses said unto his people: \"O my people! Verily, you have sinned against yourselves by worshipping the calf; turn, then. in repentance to your Maker and mortify yourselves; this will be the best for you in your Maker's sight\". And thereupon He accepted your repentance: for, behold, He alone is the Acceptor of Repentance, the Dispenser of Grace."
+    },
+    {
+        "id": 62,
+        "englishName": "Al-Jumu'a",
+        "arabicName": "الجُمُعَةِ",
+        "englishMeaning": "Friday",
+        "totalVerses": 11,
+        "startingVerses": "And [remember] when you said, \"O Moses. indeed we shall not believe thee unto we see God face to face!\" - whereupon the thunderbolt of punishment overtook you before your very eyes."
+    },
+    {
+        "id": 63,
+        "englishName": "Al-Munaafiqoon",
+        "arabicName": "المُنَافِقُونَ",
+        "englishMeaning": "The Hypocrites",
+        "totalVerses": 11,
+        "startingVerses": "But We raised you again after you had been as dead, so that you might have cause to be grateful."
+    },
+    {
+        "id": 64,
+        "englishName": "At-Taghaabun",
+        "arabicName": "التَّغَابُنِ",
+        "englishMeaning": "Mutual Disillusion",
+        "totalVerses": 18,
+        "startingVerses": "And We caused the clouds to comfort you with their shade, and sent down unto you manna and quails. [saying,] \"Partake of the good things which We have provided for you as sustenance.\" And [by all their sinning] they did no harm unto Us-but [only] against their own selves did they sin."
+    },
+    {
+        "id": 65,
+        "englishName": "At-Talaaq",
+        "arabicName": "الطَّلَاقِ",
+        "englishMeaning": "Divorce",
+        "totalVerses": 12,
+        "startingVerses": "And [remember the time] when We said: \"Enter this land, and eat of its food as you may desire. abundantly; but enter the gate humbly and say, `Remove Thou from us the burden of our sins', [whereupon] We shall forgive you your sins, and shall amply reward the doers of good.\""
+    },
+    {
+        "id": 66,
+        "englishName": "At-Tahrim",
+        "arabicName": "التَّحۡرِيمِ",
+        "englishMeaning": "The Prohibition",
+        "totalVerses": 12,
+        "startingVerses": "But those who were bent on evildoing substituted another saying for that which had been given them: and so We sent down upon those evildoers a plague from heaven in requital for all their iniquity."
+    },
+    {
+        "id": 67,
+        "englishName": "Al-Mulk",
+        "arabicName": "المُلۡكِ",
+        "englishMeaning": "The Sovereignty",
+        "totalVerses": 30,
+        "startingVerses": "And [remember] when Moses prayed for water for his people and We replied, \"Strike the rock with thy staff!\"-whereupon twelve springs gushed forth from it, so that all the people knew whence to drink. [And Moses said:] \"Eat and drink the sustenance provided by God, and do not act wickedly on earth by spreading corruption.\""
+    },
+    {
+        "id": 68,
+        "englishName": "Al-Qalam",
+        "arabicName": "القَلَمِ",
+        "englishMeaning": "The Pen",
+        "totalVerses": 52,
+        "startingVerses": "And [remember] when you said: \"O Moses, indeed we cannot endure but one kind of food; pray, then, to thy Sustainer that He bring forth for us aught of what grows from the earth - of its herbs, its cucumbers, its garlic, its lentils, its onions.\" Said [Moses]: \"Would you take a lesser thing in exchange for what is [so much] better? Go back in shame to Egypt, and then you can have what you are asking for!\" And so, ignominy and humiliation overshadowed them, and they earned the burden of God's condemnation: all this, because they persisted in denying the truth of God's messages and in slaying the prophets against all right: all this, because they rebelled [against God], and persisted in transgressing the bounds of what is right."
+    },
+    {
+        "id": 69,
+        "englishName": "Al-Haaqqa",
+        "arabicName": "الحَاقَّةِ",
+        "englishMeaning": "The Reality",
+        "totalVerses": 52,
+        "startingVerses": "VERILY, those who have attained to faith [in this divine writ], as well as those who follow the Jewish faith, and the Christians, and the Sabians -all who believe in God and the Last Day and do righteous deeds-shall have their reward with their Sustainer; and no fear need they have, and neither shall they grieve."
+    },
+    {
+        "id": 70,
+        "englishName": "Al-Ma'aarij",
+        "arabicName": "المَعَارِجِ",
+        "englishMeaning": "The Ascending Stairways",
+        "totalVerses": 44,
+        "startingVerses": "AND LO! We accepted your solemn pledge, raising Mount Sinai high above you, [and saying;] \"Hold fast with [all your] strength unto what We have vouchsafed you, and bear in mind all that is therein, so that you might remain conscious of God!\""
+    },
+    {
+        "id": 71,
+        "englishName": "Nooh",
+        "arabicName": "نُوحٍ",
+        "englishMeaning": "Noah",
+        "totalVerses": 28,
+        "startingVerses": "And you turned away after that-! And had it not been for God's favour upon you and His grace, you would surely have found yourselves among the lost;"
+    },
+    {
+        "id": 72,
+        "englishName": "Al-Jinn",
+        "arabicName": "الجِنِّ",
+        "englishMeaning": "The Jinn",
+        "totalVerses": 28,
+        "startingVerses": "for you are well aware of those from among you who profaned the Sabbath, whereupon We said unto them, \"Be as apes despicable!\""
+    },
+    {
+        "id": 73,
+        "englishName": "Al-Muzzammil",
+        "arabicName": "المُزَّمِّلِ",
+        "englishMeaning": "The Enshrouded One",
+        "totalVerses": 20,
+        "startingVerses": "and set them up as a warning example for their time and for all times to come, as well as an admonition to all who are conscious of God."
+    },
+    {
+        "id": 74,
+        "englishName": "Al-Muddaththir",
+        "arabicName": "المُدَّثِّرِ",
+        "englishMeaning": "The Cloaked One",
+        "totalVerses": 56,
+        "startingVerses": "AND LO! Moses said unto his people: \"Behold, God bids you to sacrifice a cow.\" They said: \"Dost thou mock at us?\" He answered: \"I seek refuge with God against being so ignorant!\""
+    },
+    {
+        "id": 75,
+        "englishName": "Al-Qiyaama",
+        "arabicName": "القِيَامَةِ",
+        "englishMeaning": "The Resurrection",
+        "totalVerses": 40,
+        "startingVerses": "Said they: \"Pray on our behalf unto thy Sustainer that He make clear to us what she is to be like.\" [Moses] replied: \"Behold, He says it is to be a cow neither old nor immature, but of art age in-between. Do, then, what you have been bidden!\""
+    },
+    {
+        "id": 76,
+        "englishName": "Al-Insaan",
+        "arabicName": "الإِنسَانِ",
+        "englishMeaning": "Man",
+        "totalVerses": 31,
+        "startingVerses": "Said they: \"Pray on our behalf unto thy Sustainer that He make clear to us what her colour should be. \"[Mopes] answered: \"Behold; He says it is to be a yellow cow, bright of hue, pleasing to the beholder.\""
+    },
+    {
+        "id": 77,
+        "englishName": "Al-Mursalaat",
+        "arabicName": "المُرۡسَلَاتِ",
+        "englishMeaning": "The Emissaries",
+        "totalVerses": 50,
+        "startingVerses": "Said' they: \"Pray on our behalf unto thy Sustainer that He make clear to us what she is to be like, for to us all cows resemble one another; and then, if God so wills, we shall truly be guided aright!\""
+    },
+    {
+        "id": 78,
+        "englishName": "An-Naba",
+        "arabicName": "النَّبَإِ",
+        "englishMeaning": "The Announcement",
+        "totalVerses": 40,
+        "startingVerses": "[Moses] answered: \"Behold, He says it is to be a cow not broken-in to plough the earth or to water the crops, free of fault, without markings of any other colour.\"Said they: \"At last thou hast brought out the truth!\"-and thereupon they sacrificed her, although they had almost left it undone."
+    },
+    {
+        "id": 79,
+        "englishName": "An-Naazi'aat",
+        "arabicName": "النَّازِعَاتِ",
+        "englishMeaning": "Those who drag forth",
+        "totalVerses": 46,
+        "startingVerses": "For, O children of Israel, because you had slain a human being and then cast the blame for this [crime] upon one another -although God will bring to light what you would conceals"
+    },
+    {
+        "id": 80,
+        "englishName": "Abasa",
+        "arabicName": "عَبَسَ",
+        "englishMeaning": "He frowned",
+        "totalVerses": 42,
+        "startingVerses": "We said: \"Apply this [principle] to some of those [cases of unresolved murder]: in this way God saves lives from death and shows you His will, so that you might [learn to] use your reason.\""
+    },
+    {
+        "id": 81,
+        "englishName": "At-Takwir",
+        "arabicName": "التَّكۡوِيرِ",
+        "englishMeaning": "The Overthrowing",
+        "totalVerses": 29,
+        "startingVerses": "And yet, after all this, your hearts hardened and became like rocks, or even harder: for, behold, there are rocks from which streams gush forth; and, behold, there are some from which, when they are cleft, water issues; and, behold, there are some that fall down for awe of God And God is not unmindful of what you do!"
+    },
+    {
+        "id": 82,
+        "englishName": "Al-Infitaar",
+        "arabicName": "الانفِطَارِ",
+        "englishMeaning": "The Cleaving",
+        "totalVerses": 19,
+        "startingVerses": "CAN YOU, then, hope that they will believe in what you are preaching - seeing that a good many of them were wont to listen to the word of God and then, after having understood it, to pervert it knowingly?"
+    },
+    {
+        "id": 83,
+        "englishName": "Al-Mutaffifin",
+        "arabicName": "المُطَفِّفِينَ",
+        "englishMeaning": "Defrauding",
+        "totalVerses": 36,
+        "startingVerses": "For, when they meet those who have attained to faith. they say, \"We believe [as you believe]\" - but when they find themselves alone with one another, they say. \"Do you inform them of what God has disclosed to you, so that they might use it in argument against you, quoting the words of your Sustainer? Will you not. then, use your reason?\""
+    },
+    {
+        "id": 84,
+        "englishName": "Al-Inshiqaaq",
+        "arabicName": "الانشِقَاقِ",
+        "englishMeaning": "The Splitting Open",
+        "totalVerses": 25,
+        "startingVerses": "Do they not know, then, that God is aware of all that they would conceal as well as of all that they bring into the open?"
+    },
+    {
+        "id": 85,
+        "englishName": "Al-Burooj",
+        "arabicName": "البُرُوجِ",
+        "englishMeaning": "The Constellations",
+        "totalVerses": 22,
+        "startingVerses": "And there are among them unlettered people who have no real knowledge of the divine writ, [following] only wishful beliefs and depending on nothing but conjecture."
+    },
+    {
+        "id": 86,
+        "englishName": "At-Taariq",
+        "arabicName": "الطَّارِقِ",
+        "englishMeaning": "The Morning Star",
+        "totalVerses": 17,
+        "startingVerses": "Woe, then, unto those who write down, with their own hands, [something which they claim to be] divine writ, and then say. \"This is from God,\" in order to acquire a trifling gain thereby; woe, then, unto them for what their hands have written, and woe unto them for all that they may have gained!"
+    },
+    {
+        "id": 87,
+        "englishName": "Al-A'laa",
+        "arabicName": "الأَعۡلَىٰ",
+        "englishMeaning": "The Most High",
+        "totalVerses": 19,
+        "startingVerses": "And they say, \"The fire will most certainly not touch us for more than a limited number of days.\" Say [unto them]: \"Have you received a promise from God - for God never breaks His promise - or do you attribute to God something which you cannot know?\""
+    },
+    {
+        "id": 88,
+        "englishName": "Al-Ghaashiya",
+        "arabicName": "الغَاشِيَةِ",
+        "englishMeaning": "The Overwhelming",
+        "totalVerses": 26,
+        "startingVerses": "Yea! Those who earn evil and by their sinfulness are engulfed - they are destined for the fire. therein to abide;"
+    },
+    {
+        "id": 89,
+        "englishName": "Al-Fajr",
+        "arabicName": "الفَجۡرِ",
+        "englishMeaning": "The Dawn",
+        "totalVerses": 30,
+        "startingVerses": "whereas those who attain to faith and do righteous deeds -they are destined for paradise, therein to abide."
+    },
+    {
+        "id": 90,
+        "englishName": "Al-Balad",
+        "arabicName": "البَلَدِ",
+        "englishMeaning": "The City",
+        "totalVerses": 20,
+        "startingVerses": "AND LO! We accepted this solemn pledge from [you,] ' the children of Israel: \"You shall worship none but God; and you shall do good unto your parents and kinsfolk, and the orphans, and the poor; and you shall speak unto all people in a kindly way; and you shall be constant in prayer; and you shall spend in charity.” And yet, save for a few of you, you turned away: for you are obstinate folk!"
+    },
+    {
+        "id": 91,
+        "englishName": "Ash-Shams",
+        "arabicName": "الشَّمۡسِ",
+        "englishMeaning": "The Sun",
+        "totalVerses": 15,
+        "startingVerses": "And lo! We accepted your solemn pledge that you would not shed one another's blood, and would not drive one another from your homelands - whereupon you acknowledged it; and thereto you bear witness [even now]."
+    },
+    {
+        "id": 92,
+        "englishName": "Al-Lail",
+        "arabicName": "اللَّيۡلِ",
+        "englishMeaning": "The Night",
+        "totalVerses": 21,
+        "startingVerses": "And yet, it is you who slay one another and drive some of your own people from their homelands, aiding one another against them in sin and hatred; but if they come to you as captives, you ransom them - although the very [act of] driving them away has been made unlawful to you!. Do you, then, believe in some parts of the divine writ and deny the truth of other parts? What, then, could be the reward of those among you who do such things but ignominy in the life of this world and, on the Day of Resurrection, commitment to most grievous suffering? For God is not unmindful of what you do."
+    },
+    {
+        "id": 93,
+        "englishName": "Ad-Dhuhaa",
+        "arabicName": "الضُّحَىٰ",
+        "englishMeaning": "The Morning Hours",
+        "totalVerses": 11,
+        "startingVerses": "All who buy the life of this world at the price of the life to come - their suffering shall not be lightened, nor shall they be succoured!"
+    },
+    {
+        "id": 94,
+        "englishName": "Ash-Sharh",
+        "arabicName": "الشَّرۡحِ",
+        "englishMeaning": "The Consolation",
+        "totalVerses": 8,
+        "startingVerses": "For, indeed, We vouchsafed unto Moses the divine writ and caused apostle after apostle to follow him; and We vouchsafed unto Jesus, the son of Mary, all evidence of the truth, and strengthened him with holy inspiration. [Yet] is it not so that every time an apostle came unto you with something that was not to your liking, you gloried in your arrogance, and to some of them you gave the lie, while others you would slay?"
+    },
+    {
+        "id": 95,
+        "englishName": "At-Tin",
+        "arabicName": "التِّينِ",
+        "englishMeaning": "The Fig",
+        "totalVerses": 8,
+        "startingVerses": "But they say, \"Our hearts are already full of knowledge.\" Nay, but God has rejected them because of their refusal to acknowledge the truth: for, few are the things in which they believe."
+    },
+    {
+        "id": 96,
+        "englishName": "Al-Alaq",
+        "arabicName": "العَلَقِ",
+        "englishMeaning": "The Clot",
+        "totalVerses": 19,
+        "startingVerses": "And whenever there came unto them a [new] revelation from God, confirming the truth already in their possession-and [bear in mind that] aforetime they used to pray for victory over those who were bent on denying the truth -: whenever there came unto them something which they recognized [as the truth], they would deny it. And God's rejection is the due of all who deny the truth."
+    },
+    {
+        "id": 97,
+        "englishName": "Al-Qadr",
+        "arabicName": "القَدۡرِ",
+        "englishMeaning": "The Power, Fate",
+        "totalVerses": 5,
+        "startingVerses": "Vile is that [false pride] for which they have sold their own selves by denying the truth of what God has bestowed from on high, out of envy that God should bestow aught of His favour upon whomsoever He wills of His servants: and thus have they earned the burden of God's condemnation, over and over. And for those who deny the truth there is shameful suffering in store."
+    },
+    {
+        "id": 98,
+        "englishName": "Al-Bayyina",
+        "arabicName": "البَيِّنَةِ",
+        "englishMeaning": "The Evidence",
+        "totalVerses": 8,
+        "startingVerses": "For when they are told, \"Believe in what God has bestowed from on high,\" they reply, \"We believe [only] in what has been bestowed on us\"-and they deny the truth of everything else, although it be a truth confirming the one already in their possession. Say \"Why, then, did you slay God's prophets aforetime, if you were (truly] believers?\""
+    },
+    {
+        "id": 99,
+        "englishName": "Az-Zalzala",
+        "arabicName": "الزَّلۡزَلَةِ",
+        "englishMeaning": "The Earthquake",
+        "totalVerses": 8,
+        "startingVerses": "And indeed, there came unto you Moses with all evidence of the truth - and thereupon. in his absence, you took to worshipping the (golden] calf, and acted wickedly."
+    },
+    {
+        "id": 100,
+        "englishName": "Al-Aadiyaat",
+        "arabicName": "العَادِيَاتِ",
+        "englishMeaning": "The Chargers",
+        "totalVerses": 11,
+        "startingVerses": "And, lo, We accepted your solemn pledge, raising Mount Sinai high above you, [saying,] \"Hold fast with [all your] strength unto what We have vouchsafed you, and hearken unto it!\" [But] they say, \"We have heard, but we disobey\" - for their hearts are filled to overflowing with love of the [golden] calf because of their refusal to acknowledge the truth. Say: \"Vile is what this [false] belief of yours enjoins upon you-if indeed you are believers!\""
+    },
+    {
+        "id": 101,
+        "englishName": "Al-Qaari'a",
+        "arabicName": "القَارِعَةِ",
+        "englishMeaning": "The Calamity",
+        "totalVerses": 11,
+        "startingVerses": "Say: \"If an afterlife with God is to be for you alone, to the exclusion of all other people, then. you should long for death-if what you say is true!\""
+    },
+    {
+        "id": 102,
+        "englishName": "At-Takaathur",
+        "arabicName": "التَّكَاثُرِ",
+        "englishMeaning": "Competition",
+        "totalVerses": 8,
+        "startingVerses": "But never will they long for it, because [they are aware] of what their hands have sent ahead in this world: and God has full knowledge of evildoers."
+    },
+    {
+        "id": 103,
+        "englishName": "Al-Asr",
+        "arabicName": "العَصۡرِ",
+        "englishMeaning": "The Declining Day, Epoch",
+        "totalVerses": 3,
+        "startingVerses": "And thou wilt most certainly find that they cling to life more eagerly than any other people, even more than those who are bent on ascribing divinity to other beings beside God: every one of them would love to live a thousand years, although the grant of long life could not save him from suffering [in the hereafter]: for God sees all that they do."
+    },
+    {
+        "id": 104,
+        "englishName": "Al-Humaza",
+        "arabicName": "الهُمَزَةِ",
+        "englishMeaning": "The Traducer",
+        "totalVerses": 9,
+        "startingVerses": "SAY [O Prophet]: \"Whosoever is an enemy of Gabriel\" -who,, verily, by God's leave, has brought down upon thy heart this [divine writ] which confirms the truth of whatever there still remains [of earlier revelations], and is a guidance and a glad tiding for the believers-:"
+    },
+    {
+        "id": 105,
+        "englishName": "Al-Fil",
+        "arabicName": "الفِيلِ",
+        "englishMeaning": "The Elephant",
+        "totalVerses": 5,
+        "startingVerses": "\"whosover is an enemy of God and His angels and His message-bearers, including Gabriel and Michael, [should know that,] verily, God is the enemy of all who deny the truth.\""
+    },
+    {
+        "id": 106,
+        "englishName": "Quraish",
+        "arabicName": "قُرَيۡشٍ",
+        "englishMeaning": "Quraysh",
+        "totalVerses": 4,
+        "startingVerses": "For, clear messages indeed have We bestowed upon thee from on high; and none denies their truth save the iniquitous."
+    },
+    {
+        "id": 107,
+        "englishName": "Al-Maa'un",
+        "arabicName": "المَاعُونِ",
+        "englishMeaning": "Almsgiving",
+        "totalVerses": 7,
+        "startingVerses": "Is it not so that every time they made a promise [unto God], some of them cast it aside? Nay, indeed: most of them do not believe."
+    },
+    {
+        "id": 108,
+        "englishName": "Al-Kawthar",
+        "arabicName": "الكَوۡثَرِ",
+        "englishMeaning": "Abundance",
+        "totalVerses": 3,
+        "startingVerses": "And [even now,] when there has come unto them an apostle from God, confirming the truth already in their possession, some of those who were granted revelation aforetime cast the divine writ behind their backs as though unaware [of what it says],"
+    },
+    {
+        "id": 109,
+        "englishName": "Al-Kaafiroon",
+        "arabicName": "الكَافِرُونَ",
+        "englishMeaning": "The Disbelievers",
+        "totalVerses": 6,
+        "startingVerses": "and follow [instead] that which the evil ones used to practice during Solomon's reign - for it was not Solomon who denied the truth, but those evil ones denied it by teaching people sorcery -; and [they follow] that which has come down through the two angels in Babylon, Hurut and Marut-although these two never taught it to anyone without first declaring, \"We are but a temptation to evil: do not, then, deny [God's] truth!\" And they learn from these two how to create discord between a man and his wife; but whereas they can harm none thereby save by God's leave, they acquire a knowledge that only harms themselves and does not benefit them - although they know; indeed, that he who acquires this [knowledge] shall have no share in the good of the life to come. For, vile indeed is that [art] for which they have sold their own selves -had they but known it!"
+    },
+    {
+        "id": 110,
+        "englishName": "An-Nasr",
+        "arabicName": "النَّصۡرِ",
+        "englishMeaning": "Divine Support",
+        "totalVerses": 3,
+        "startingVerses": "And had they but believed and been conscious of Him, reward from God would indeed have brought them good-had they but known it!"
+    },
+    {
+        "id": 111,
+        "englishName": "Al-Masad",
+        "arabicName": "المَسَدِ",
+        "englishMeaning": "The Palm Fibre",
+        "totalVerses": 5,
+        "startingVerses": "O YOU who have attained to faith! Do not say [to the Prophet], \"Listen to us,\" but rather say, \"Have patience with us,\" and hearken [unto him], since grievous suffering awaits those who deny the truth."
+    },
+    {
+        "id": 112,
+        "englishName": "Al-Ikhlaas",
+        "arabicName": "الإِخۡلَاصِ",
+        "englishMeaning": "Sincerity",
+        "totalVerses": 4,
+        "startingVerses": "Neither those from among the followers of earlier revelation who are bent on denying the truth, nor those who ascribe divinity to other beings beside God, would like to see any good ever bestowed upon you from on high by your Sustainer; but God singles out for His grace whom He wills-for God is limitless in His great bounty."
+    },
+    {
+        "id": 113,
+        "englishName": "Al-Falaq",
+        "arabicName": "الفَلَقِ",
+        "englishMeaning": "The Dawn",
+        "totalVerses": 5,
+        "startingVerses": "Any message which, We annul or consign to oblivion We replace with a better or a similar one. Dost thou not know that God has the power to will anything?"
+    },
+    {
+        "id": 114,
+        "englishName": "An-Naas",
+        "arabicName": "النَّاسِ",
+        "englishMeaning": "Mankind",
+        "totalVerses": 6,
+        "startingVerses": "Dost thou not know that God's is the dominion over the heavens and the earth, and that besides God you have none to protect you or bring you succour?"
+    }
+]

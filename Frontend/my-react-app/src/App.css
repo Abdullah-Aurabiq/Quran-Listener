@@ -13,23 +13,30 @@
     left: 3vw;
     position: relative;
 }
+
+@font-face {
+    font-family: 'sura_names';
+    src: url('/fonts/sura_names.woff2') format('woff2'),
+        url('/fonts/sura_names.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
 @font-face {
   font-family: 'MyCustomFont';
-  src: url('http://localhost:1481/static/fonts/UthmanicHafs1Ver18.woff2') format('woff2'),
-    url('http://localhost:1481/static/fonts/UthmanicHafs1Ver18.woff2') format('woff2');
+  src: url('/fonts/UthmanicHafs1Ver18.woff2') format('woff2'),
+    url('/fonts/UthmanicHafs1Ver18.woff2') format('woff2');
 }
 
 @font-face {
   font-family: 'fahd';
-  src: url('http://localhost:1481/static/fonts/UthmanTN_v2-0.ttf') format('ttf'),
-    url('http://localhost:1481/static/fonts/UthmanTN_v2-0.ttf') format('ttf');
+  src: url('/fonts/UthmanTN_v2-0.ttf') format('ttf'),
+    url('/fonts/UthmanTN_v2-0.ttf') format('ttf');
 }
 
-@font-face {
-  font-family: 'surahs';
-  src: url('http://localhost:1481/static/fonts/sura_names.woff2') format('woff2'),
-    url('http://localhost:1481/static/fonts/sura_names.woff2') format('woff2');
-}
 
 #QuranVerse {
   font-family: 'MyCustomFont', sans-serif;
@@ -59,7 +66,7 @@
 }
 
 #surahname {
-  font-family: 'surahs', sans-serif;
+  font-family: 'sura_names', sans-serif;
   background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
   border-radius: 20px;
 }

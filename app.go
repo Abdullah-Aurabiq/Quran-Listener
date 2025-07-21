@@ -1,7 +1,7 @@
 package main
 
 import (
-	"database/sql"
+	"context"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -9,21 +9,25 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
+	"github.com/joho/godotenv"
 	"github.com/rs/cors"
+	"golang.ngrok.com/ngrok/v2"
 )
 
 // App represents the application
 
 type App struct {
 	Router *mux.Router
-	DB     *sql.DB
+	// DB     *sql.DB
 }
 
 var store = sessions.NewCookieStore([]byte("`giytIBFi0<.-3U,y$<!fdQFx$?@)}"))
@@ -39,34 +43,79 @@ type SurahCardData struct {
 }
 
 // New creates a new instance of App
-func (app *App) Initialize(Dbuser string, Dbpassword string, Dbname string) error {
-	connectionString := fmt.Sprintf("%v:%v@tcp(127.0.0.1:3306)/%v", Dbuser, Dbpassword, Dbname)
-	var err error
-	app.DB, err = sql.Open("mysql", connectionString)
-	if err != nil {
-		return err
-	}
+func (app *App) Initialize() error {
+	// connectionString := fmt.Sprintf("%v:%v@tcp(127.0.0.1:3306)/%v", Dbuser, Dbpassword, Dbname)
+	// var err error
+	// app.DB, err = sql.Open("mysql", connectionString)
+	// if err != nil {
+	// 	return err
+	// }
 
 	app.Router = mux.NewRouter().StrictSlash(true)
 	app.handleRoutes()
 	return nil
 }
-func enableCors(w http.ResponseWriter) {
-	w.Header().Set("Access-Control-Allow-Origin", "*") // Use specific origin in production
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-}
 
 // SetDB sets the database connection
 func (app *App) Run(address string) {
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5174"}, // Update with your frontend URL
+		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
 		AllowedHeaders:   []string{"Content-Type", "Authorization"},
 		AllowCredentials: true,
 	})
+
+	// Load .env
+	if err := godotenv.Load(); err != nil {
+		log.Println("Error loading .env file")
+	}
+
+	// ✅ Run ngrok in background
+	go func() {
+		time.Sleep(2 * time.Second)
+		if err := run(context.Background()); err != nil {
+			log.Fatalf("Failed to start ngrok agent: %v", err)
+		}
+	}()
+
+	// ✅ Start actual server
 	handler := c.Handler(app.Router)
+	log.Println("Starting server on", address)
 	log.Fatal(http.ListenAndServe(address, handler))
+}
+
+// const trafficPolicy = `
+// on_http_request:
+//   - actions:
+//   - type: oauth
+//     config:
+//     provider: google
+//
+// `
+const address = "localhost:1481"
+
+func run(ctx context.Context) error {
+	agent, err := ngrok.NewAgent(ngrok.WithAuthtoken(os.Getenv("NGROK_AUTHTOKEN")))
+	if err != nil {
+		return err
+	}
+	time.Sleep(2 * time.Second) // Wait for the agent to start
+	ln, err := agent.Forward(ctx,
+		ngrok.WithUpstream(address),
+		ngrok.WithURL("electric-mistakenly-rat.ngrok-free.app"),
+		// ngrok.WithTrafficPolicy(trafficPolicy),
+	)
+
+	if err != nil {
+		fmt.Println("Error", err)
+		return err
+	}
+
+	fmt.Println("Endpoint online: forwarding from", ln.URL(), "to", address)
+
+	// Explicitly stop forwarding; otherwise it runs indefinitely
+	<-ln.Done()
+	return nil
 }
 
 const API = "https://www.mp3quran.net/api/_arabic_sura.php"
@@ -478,115 +527,116 @@ func contact_us(w http.ResponseWriter, r *http.Request) {
 func about_us(w http.ResponseWriter, r *http.Request) {
 	sendResponse(w, http.StatusOK, nil, "templates/about-us.html", "text/html; charset=UTF-8")
 }
-func (app *App) SignupAPI(w http.ResponseWriter, r *http.Request) {
-	var st Users
-	username := r.FormValue("username")
-	gender := r.FormValue("gender")
-	email := r.FormValue("email")
-	password := r.FormValue("password")
-	confirmPassword := r.FormValue("confirmpassword")
-	fmt.Println(username, email, password, confirmPassword)
-	st.UserName = username
-	st.Email = email
-	st.Password = password
-	st.Gender = gender
-	if password != confirmPassword {
-		sendError(w, http.StatusBadRequest, "Passwords do not match")
-		return
-	}
 
-	if username != "" && email != "" && password != "" {
-		// Create User account
-		err := st.CreateUserAccount(app.DB)
-		if err != nil {
-			sendError(w, http.StatusInternalServerError, err.Error())
-			return
-		}
-		// Create a session for the user
-		session, _ := store.Get(r, "session")
-		session.Values["email"] = st.Email
-		session.Values["username"] = st.UserName
-		session.Values["authenticated"] = true
-		err = session.Save(r, w)
-		if err != nil {
-			sendError(w, http.StatusInternalServerError, "Failed to save session")
-			return
-		}
+// func (app *App) SignupAPI(w http.ResponseWriter, r *http.Request) {
+// 	var st Users
+// 	username := r.FormValue("username")
+// 	gender := r.FormValue("gender")
+// 	email := r.FormValue("email")
+// 	password := r.FormValue("password")
+// 	confirmPassword := r.FormValue("confirmpassword")
+// 	fmt.Println(username, email, password, confirmPassword)
+// 	st.UserName = username
+// 	st.Email = email
+// 	st.Password = password
+// 	st.Gender = gender
+// 	if password != confirmPassword {
+// 		sendError(w, http.StatusBadRequest, "Passwords do not match")
+// 		return
+// 	}
 
-		// Prepare the response data
-		responseData := map[string]interface{}{
-			"email":         st.Email,
-			"username":      st.UserName,
-			"authenticated": true,
-		}
+// 	if username != "" && email != "" && password != "" {
+// 		// Create User account
+// 		err := st.CreateUserAccount(app.DB)
+// 		if err != nil {
+// 			sendError(w, http.StatusInternalServerError, err.Error())
+// 			return
+// 		}
+// 		// Create a session for the user
+// 		session, _ := store.Get(r, "session")
+// 		session.Values["email"] = st.Email
+// 		session.Values["username"] = st.UserName
+// 		session.Values["authenticated"] = true
+// 		err = session.Save(r, w)
+// 		if err != nil {
+// 			sendError(w, http.StatusInternalServerError, "Failed to save session")
+// 			return
+// 		}
 
-		// Convert response data to JSON
-		jsonData, err := json.Marshal(responseData)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+// 		// Prepare the response data
+// 		responseData := map[string]interface{}{
+// 			"email":         st.Email,
+// 			"username":      st.UserName,
+// 			"authenticated": true,
+// 		}
 
-		// Set the content type to application/json and write the JSON response
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		w.Write(jsonData)
-		return
-	}
+// 		// Convert response data to JSON
+// 		jsonData, err := json.Marshal(responseData)
+// 		if err != nil {
+// 			http.Error(w, err.Error(), http.StatusInternalServerError)
+// 			return
+// 		}
 
-	sendError(w, http.StatusBadRequest, "Invalid input")
-}
+// 		// Set the content type to application/json and write the JSON response
+// 		w.Header().Set("Content-Type", "application/json")
+// 		w.WriteHeader(http.StatusOK)
+// 		w.Write(jsonData)
+// 		return
+// 	}
 
-func (app *App) LoginAPI(w http.ResponseWriter, r *http.Request) {
-	// Parse form values
-	email := r.FormValue("email")
-	password := r.FormValue("password")
+// 	sendError(w, http.StatusBadRequest, "Invalid input")
+// }
 
-	// Validate input
-	if email == "" || password == "" {
-		http.Error(w, "Email and password are required", http.StatusBadRequest)
-		return
-	}
+// func (app *App) LoginAPI(w http.ResponseWriter, r *http.Request) {
+// 	// Parse form values
+// 	email := r.FormValue("email")
+// 	password := r.FormValue("password")
 
-	var st Users
-	st.Email = email
-	st.Password = password
-	err := st.UserLogin(app.DB)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+// 	// Validate input
+// 	if email == "" || password == "" {
+// 		http.Error(w, "Email and password are required", http.StatusBadRequest)
+// 		return
+// 	}
 
-	// Create a session for the user
-	session, _ := store.Get(r, "session")
-	session.Values["email"] = st.Email
-	session.Values["username"] = st.UserName
-	session.Values["authenticated"] = true
-	err = session.Save(r, w)
-	if err != nil {
-		http.Error(w, "Failed to save session", http.StatusInternalServerError)
-		return
-	}
+// 	var st Users
+// 	st.Email = email
+// 	st.Password = password
+// 	err := st.UserLogin(app.DB)
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
 
-	// Prepare the response data
-	responseData := map[string]interface{}{
-		"email":         st.Email,
-		"username":      st.UserName,
-		"authenticated": true,
-	}
+// 	// Create a session for the user
+// 	session, _ := store.Get(r, "session")
+// 	session.Values["email"] = st.Email
+// 	session.Values["username"] = st.UserName
+// 	session.Values["authenticated"] = true
+// 	err = session.Save(r, w)
+// 	if err != nil {
+// 		http.Error(w, "Failed to save session", http.StatusInternalServerError)
+// 		return
+// 	}
 
-	// Convert response data to JSON
-	jsonData, err := json.Marshal(responseData)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+// 	// Prepare the response data
+// 	responseData := map[string]interface{}{
+// 		"email":         st.Email,
+// 		"username":      st.UserName,
+// 		"authenticated": true,
+// 	}
 
-	// Set the content type to application/json and write the JSON response
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(jsonData)
-}
+// 	// Convert response data to JSON
+// 	jsonData, err := json.Marshal(responseData)
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	// Set the content type to application/json and write the JSON response
+// 	w.Header().Set("Content-Type", "application/json")
+// 	w.WriteHeader(http.StatusOK)
+// 	w.Write(jsonData)
+// }
 
 func (app *App) Logout(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "session")
@@ -835,29 +885,29 @@ func getSurahs(w http.ResponseWriter, req *http.Request) {
 }
 
 // Helper functions to determine if a Surah meets the criteria
-func isFavorite(surahID int) bool {
-	// Implement logic to check if the Surah is marked as favorite
-	return false
-}
+// func isFavorite(surahID int) bool {
+// 	// Implement logic to check if the Surah is marked as favorite
+// 	return false
+// }
 
-func isRecentlyViewed(surahID int) bool {
-	// Implement logic to check if the Surah is recently viewed
-	return false
-}
+// func isRecentlyViewed(surahID int) bool {
+// 	// Implement logic to check if the Surah is recently viewed
+// 	return false
+// }
 
-func isRelatedToPrayerTime(surahID int) bool {
-	// Implement logic to check if the Surah is related to the current prayer time
-	return false
-}
+// func isRelatedToPrayerTime(surahID int) bool {
+// 	// Implement logic to check if the Surah is related to the current prayer time
+// 	return false
+// }
 
 func (app *App) handleRoutes() {
 	// app.Router.HandleFunc("/home/", Intro)
 	app.Router.HandleFunc("/api/hadith/", Hadith)
 	app.Router.HandleFunc("/contact-us/", contact_us)
 	// app.Router.HandleFunc("/about-us/", about_us)
-	app.Router.HandleFunc("/api/register", app.SignupAPI)
-	app.Router.HandleFunc("/api/login", app.LoginAPI)
-	app.Router.HandleFunc("/api/logout", app.Logout)
+	// app.Router.HandleFunc("/api/register", app.SignupAPI)
+	// app.Router.HandleFunc("/api/login", app.LoginAPI)
+	// app.Router.HandleFunc("/api/logout", app.Logout)
 	app.Router.HandleFunc("/api/quran/{id}", getQuranAPI).Methods("GET")
 	app.Router.HandleFunc("/api/search/", SearchAPI)
 	app.Router.HandleFunc("/api/surahs", getSurahs).Methods("GET")

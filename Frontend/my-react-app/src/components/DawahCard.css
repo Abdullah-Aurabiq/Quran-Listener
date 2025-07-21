@@ -1,15 +1,19 @@
 @font-face {
     font-family: 'MyCustomFont';
-    src: url('http://localhost:1481/static/fonts/UthmanicHafs1Ver18.woff2') format('woff2'),
-        url('http://localhost:1481/static/fonts/UthmanicHafs1Ver18.woff2') format('woff2');
+    src: url('/fonts/UthmanicHafs1Ver18.woff2') format('woff2'),
+        url('/fonts/UthmanicHafs1Ver18.woff2') format('woff2');
 }
 
 @font-face {
     font-family: 'fahd';
-    src: url('http://localhost:1481/static/fonts/p49.woff') format('woff'),
-        url('http://localhost:1481/static/fonts/p49.woff2') format('woff2');
+    src: url('/fonts/p49.woff') format('woff'),
+        url('/fonts/p49.woff2') format('woff2');
 }
-
+@font-face {
+  font-family: 'surahnames';
+  src: url('/fonts/sura_names.woff2') format('woff2'),
+    url('/fonts/sura_names.woff2') format('woff2');
+}
 
 .dawah-card {
     position: relative;

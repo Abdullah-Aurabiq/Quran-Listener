@@ -4,6 +4,7 @@ import VerseCard from './VerseCard';
 import CustomDropdown from './CustomDropdown';
 import SettingsMenu from './SettingsMenu';
 import Modal from './Modal';
+import { FaPrayingHands } from 'react-icons/fa'; // Add this import for sajda icon
 import './VoiceChatCard.css';
 
 const Quran = ({ surahId }) => {
@@ -31,14 +32,19 @@ const Quran = ({ surahId }) => {
         const arabicVerses = Object.values(arData.quran[arabicVersion]);
 
         // English: from Global Quran API
-        const enRes = await fetch(`https://api.globalquran.com/surah/${surahId}/${englishVersion}`);
+        const enRes = await fetch(`https://api.alquran.cloud/v1/surah/${surahId}/${englishVersion}`);
         const enData = await enRes.json();
-        const englishVerses = Object.values(enData.quran[englishVersion]);
+        // Now include sajda property
+        const englishVerses = enData.data.ayahs.map(a => ({
+          verse: a.text,
+          sajda: a.sajda
+        }));
 
         // Merge
         const combined = englishVerses.map((en, i) => ({
           ar: arabicVerses[i]?.verse || '',
-          en: en.verse || ''
+          en: en.verse || '',
+          sajda: en.sajda || false
         }));
 
         setVerses(combined);
@@ -54,7 +60,14 @@ const Quran = ({ surahId }) => {
     async function fetchReciters() {
       try {
         const res = await axios.get('https://api.quran.com/api/v4/resources/recitations');
-        const list = res.data.recitations;
+        // before getting the list, look how the data is structured in response
+        // [recitation: {id, name, ...}, ...]
+
+        const list = res.data.recitations.map(r => ({
+          id: r.id,
+          name: r.reciter_name,
+          style: r.style,
+        }));
         setReciters(list);
         setSelectedReciter(list[0]); // default
       } catch (err) {
@@ -82,14 +95,21 @@ const Quran = ({ surahId }) => {
 
       <div id="QuranVerse" style={{ color: 'white', margin: '10px', textWrap: 'wrap', pointerEvents: 'all' }} dir="rtl">
         {verses.map((v, i) => (
-          <VerseCard
-            key={i}
-            arabic={v.ar}
-            english={v.en}
-            settings={settings}
-            verseNumber={i + 1}
-            currentWord={currentWord}
-          />
+          <div key={i} style={{ display: 'flex', alignItems: 'center' }}>
+            <VerseCard
+              arabic={v.ar}
+              english={v.en}
+              settings={settings}
+              verseNumber={i + 1}
+              currentWord={currentWord}
+            />
+            {v.sajda ? (
+              <FaPrayingHands
+                title="Sajda"
+                style={{ color: 'gold', marginLeft: 8, fontSize: 22 }}
+              />
+            ) : null}
+          </div>
         ))}
       </div>
 

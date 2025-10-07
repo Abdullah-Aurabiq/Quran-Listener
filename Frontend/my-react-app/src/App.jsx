@@ -52,6 +52,7 @@ function Home({ surahs, loading }) {
         {surahs.map((surah) => (
           <SurahCard key={surah.id} surah={surah} onSelectSurah={handleSelectSurah} />
         ))}
+        <Dawah />
       </div>
     </div>
   );
